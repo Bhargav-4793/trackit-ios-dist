@@ -1,0 +1,32 @@
+// Sample.xcconfig.example — the template. Copy it, do not edit it.
+//
+//     cp SampleApp/Resources/Sample.xcconfig.example SampleApp/Resources/Sample.xcconfig
+//
+// `Sample.xcconfig` is git-ignored and is never committed.
+//
+// There is deliberately NO DEFAULT for OSRM_BASE_URL. A URL that "just works"
+// is worth very little next to a rate limit somebody else pays for: the public
+// OSRM demo server has no availability or rate guarantee, and a default that
+// works in development becomes a production dependency nobody chose. Left
+// unset, the Info.plist key resolves to an empty string, `installRoadSnapping()`
+// installs nothing, and `buildTrack` returns raw geometry — the Snap toggle is
+// then honestly inert rather than silently pointed at someone else's server.
+//
+// Wiring it up, once the copy exists:
+//   Xcode → SampleApp project → Info → Configurations → set Sample.xcconfig as
+//   the base configuration for the SampleApp target in Debug and Release.
+//
+// Or, without touching the project, pass it on the command line:
+//   xcodebuild -project SampleApp.xcodeproj -scheme SampleApp \
+//     -destination 'generic/platform=iOS Simulator' \
+//     OSRM_BASE_URL=https://osrm.example.internal build
+//
+// Note that `//` starts a comment in xcconfig, so a bare `https://host` would be
+// truncated at the scheme. Escape it as below, or set the value without a scheme
+// and add it back — the escape is the conventional fix.
+
+OSRM_BASE_URL = https:/$()/osrm.example.internal
+
+// The OSRM profile segment the provider appends (`driving`, `walking`,
+// `cycling` on a stock build) is a code-side argument, not a build setting; it
+// lives in `installRoadSnapping()`.

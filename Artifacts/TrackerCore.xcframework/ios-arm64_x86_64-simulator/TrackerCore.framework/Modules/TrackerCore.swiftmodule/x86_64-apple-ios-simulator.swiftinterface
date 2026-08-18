@@ -1,0 +1,620 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.2.1 (swiftlang-6.2.1.4.8 clang-1700.4.4.1)
+// swift-module-flags: -target x86_64-apple-ios17.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 6 -enforce-exclusivity=unchecked -O -enable-experimental-feature DebugDescriptionMacro -module-name TrackerCore -package-name Tracker
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.2.1
+import BackgroundTasks
+import CoreLocation
+import CoreMotion
+import CryptoKit
+import Darwin
+import Foundation
+import Swift
+import TrackerGeo
+import UIKit
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+import os
+public enum MotionQuality : Swift.String, Swift.Sendable {
+  case full
+  case degraded
+  case poor
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct DeviceSensors : Swift.Sendable, Swift.Equatable {
+  public let activityRecognition: Swift.Bool
+  public let stepCounting: Swift.Bool
+  public let significantLocationChange: Swift.Bool
+  public let regionMonitoring: Swift.Bool
+  public let motionQuality: TrackerCore.MotionQuality
+  public init(activityRecognition: Swift.Bool, stepCounting: Swift.Bool, significantLocationChange: Swift.Bool, regionMonitoring: Swift.Bool, motionQuality: TrackerCore.MotionQuality)
+  public static func == (a: TrackerCore.DeviceSensors, b: TrackerCore.DeviceSensors) -> Swift.Bool
+}
+public enum MotionAuthorization : Swift.String, Swift.Sendable {
+  case notDetermined
+  case denied
+  case restricted
+  case authorized
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum BackgroundRequest : Swift.Sendable {
+  case alreadyGranted
+  case granted
+  case denied
+  case needsWhenInUseFirst
+  case needsSettings(Foundation.URL)
+}
+@_hasMissingDesignatedInitializers @_Concurrency.MainActor final public class PermissionManager {
+  @_Concurrency.MainActor final public func tier() -> TrackerCore.AuthorizationTier
+  @_Concurrency.MainActor final public func accuracy() -> TrackerCore.LocationAccuracy
+  @_Concurrency.MainActor final public func motionAuthorization() -> TrackerCore.MotionAuthorization
+  @_Concurrency.MainActor final public func requestWhenInUse() async -> TrackerCore.AuthorizationTier
+  @_Concurrency.MainActor final public func requestAlways() async -> TrackerCore.BackgroundRequest
+  @_Concurrency.MainActor final public func requestMotion() async -> TrackerCore.MotionAuthorization
+  @_Concurrency.MainActor final public func requestTemporaryFullAccuracy(purposeKey: Swift.String) async -> TrackerCore.LocationAccuracy
+  @_Concurrency.MainActor final public func shouldStopAsking(attempts: Swift.Int) -> Swift.Bool
+  @_Concurrency.MainActor final public var settingsURL: Foundation.URL {
+    get
+  }
+  @objc deinit
+}
+public enum AuthorizationTier : Swift.String, Swift.Sendable {
+  case none
+  case whenInUse
+  case always
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum LocationAccuracy : Swift.String, Swift.Sendable {
+  case reduced
+  case full
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct ProviderState : Swift.Sendable, Swift.Equatable {
+  public let locationServicesEnabled: Swift.Bool
+  public let authorization: TrackerCore.AuthorizationTier
+  public let accuracyAuthorization: TrackerCore.LocationAccuracy
+  public let significantLocationChangeAvailable: Swift.Bool
+  public let regionMonitoringAvailable: Swift.Bool
+  public let lowPowerMode: Swift.Bool
+  public init(locationServicesEnabled: Swift.Bool = false, authorization: TrackerCore.AuthorizationTier = .none, accuracyAuthorization: TrackerCore.LocationAccuracy = .reduced, significantLocationChangeAvailable: Swift.Bool = false, regionMonitoringAvailable: Swift.Bool = false, lowPowerMode: Swift.Bool = false)
+  public static func == (a: TrackerCore.ProviderState, b: TrackerCore.ProviderState) -> Swift.Bool
+}
+public enum PowerSource : Swift.String, Swift.Sendable {
+  case none
+  case ac
+  case usb
+  case wireless
+  case dock
+  case unknown
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct BatteryInfo : Swift.Sendable, Swift.Equatable {
+  public let percent: Swift.Int?
+  public let isCharging: Swift.Bool?
+  public let powerSource: TrackerCore.PowerSource
+  public let isLow: Swift.Bool
+  public static func == (a: TrackerCore.BatteryInfo, b: TrackerCore.BatteryInfo) -> Swift.Bool
+}
+public enum TrackerEvent : Swift.Sendable {
+  case location(TrackerGeo.TrackPoint)
+  case locationRejected(TrackerGeo.FixDecision)
+  case motionChange(TrackerGeo.MotionState, TrackerGeo.TrackPoint?)
+  case activityChange(TrackerGeo.ActivityType, confidence: Swift.Int)
+  case enabledChange(Swift.Bool)
+  case providerChange(TrackerCore.ProviderState)
+  case heartbeat(atMs: Swift.Int64)
+  case geofenceEnter(TrackerCore.GeofenceEvent)
+  case geofenceExit(TrackerCore.GeofenceEvent)
+  case geofenceDwell(TrackerCore.GeofenceEvent)
+  case powerSaveChange(Swift.Bool)
+  case batteryChange(TrackerCore.BatteryInfo)
+  case sessionInterrupted(TrackerCore.TrackSession)
+  case diagnostic(Swift.String)
+  case licenseDeactivated(status: Swift.String, reason: Swift.String?)
+  case error(TrackerCore.ErrorCode, Swift.String)
+}
+public enum ErrorCode : Swift.String, Swift.Sendable {
+  case notReady
+  case permissionDenied
+  case backgroundPermissionMissing
+  case coarseOnly
+  case locationDisabled
+  case fgsStartRefused
+  case fixTimeout
+  case storageFull
+  case storageReset
+  case trackerDead
+  case invalidConfig
+  case motionDetectionDegraded
+  case snapUnavailable
+  case internalError
+  case licenseMissing
+  case licenseInvalid
+  case licenseBundleMismatch
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct Geofence : Swift.Sendable, Swift.Equatable, Swift.Identifiable {
+  public let id: Swift.String
+  public let latitude: Swift.Double
+  public let longitude: Swift.Double
+  public let radiusM: Swift.Double
+  public let notifyOnEntry: Swift.Bool
+  public let notifyOnExit: Swift.Bool
+  public let dwellAfterMs: Swift.Int64?
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(id: Swift.String, latitude: Swift.Double, longitude: Swift.Double, radiusM: Swift.Double, notifyOnEntry: Swift.Bool = true, notifyOnExit: Swift.Bool = true, dwellAfterMs: Swift.Int64? = nil)
+  #endif
+  public var centre: TrackerGeo.GeoPoint {
+    get
+  }
+  public static func == (a: TrackerCore.Geofence, b: TrackerCore.Geofence) -> Swift.Bool
+  public typealias ID = Swift.String
+}
+public enum GeofenceTransition : Swift.String, Swift.Sendable, Swift.Codable {
+  case enter
+  case exit
+  case dwell
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct GeofenceEvent : Swift.Sendable, Swift.Equatable, Swift.Identifiable {
+  public let id: Swift.Int64
+  public let geofenceID: Swift.String
+  public let transition: TrackerCore.GeofenceTransition
+  public let timeMs: Swift.Int64
+  public let latitude: Swift.Double
+  public let longitude: Swift.Double
+  public let radiusM: Swift.Double
+  public init(id: Swift.Int64 = 0, geofenceID: Swift.String, transition: TrackerCore.GeofenceTransition, timeMs: Swift.Int64, latitude: Swift.Double, longitude: Swift.Double, radiusM: Swift.Double)
+  public static func == (a: TrackerCore.GeofenceEvent, b: TrackerCore.GeofenceEvent) -> Swift.Bool
+  public typealias ID = Swift.Int64
+}
+public struct PointQuery : Swift.Sendable, Swift.Equatable {
+  public var sessionID: Swift.String?
+  public var fromMs: Swift.Int64?
+  public var toMs: Swift.Int64?
+  public var limit: Swift.Int
+  public var offset: Swift.Int
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(sessionID: Swift.String? = nil, fromMs: Swift.Int64? = nil, toMs: Swift.Int64? = nil, limit: Swift.Int = PointQuery.defaultLimit, offset: Swift.Int = 0)
+  #endif
+  public static let defaultLimit: Swift.Int
+  public static func == (a: TrackerCore.PointQuery, b: TrackerCore.PointQuery) -> Swift.Bool
+}
+public struct RawFix : Swift.Sendable, Swift.Equatable, Swift.Identifiable {
+  public let id: Swift.Int64
+  public let sessionID: Swift.String
+  public let timeMs: Swift.Int64
+  public let monotonicNanos: Swift.Int64
+  public let receivedAtMonotonicNanos: Swift.Int64
+  public let latitude: Swift.Double
+  public let longitude: Swift.Double
+  public let accuracyM: Swift.Float
+  public let altitudeM: Swift.Double?
+  public let verticalAccuracyM: Swift.Float?
+  public let speedMps: Swift.Float
+  public let bearingDeg: Swift.Float
+  public let hasSpeed: Swift.Bool
+  public let hasBearing: Swift.Bool
+  public let provider: Swift.String
+  public let isMock: Swift.Bool
+  public let speedAccuracyMps: Swift.Float?
+  public let bearingAccuracyDeg: Swift.Float?
+  public static func == (a: TrackerCore.RawFix, b: TrackerCore.RawFix) -> Swift.Bool
+  public typealias ID = Swift.Int64
+}
+public struct RawPoint : Swift.Sendable, Swift.Equatable, Swift.Identifiable {
+  public let id: Swift.Int64
+  public let uuid: Swift.String
+  public let sessionID: Swift.String
+  public let timeMs: Swift.Int64
+  public let monotonicNanos: Swift.Int64
+  public let localDate: Swift.String
+  public let timezone: Swift.String
+  public let latitude: Swift.Double
+  public let longitude: Swift.Double
+  public let accuracyM: Swift.Float
+  public let speedMps: Swift.Float
+  public let bearingDeg: Swift.Float
+  public let hasSpeed: Swift.Bool
+  public let hasBearing: Swift.Bool
+  public let provider: Swift.String
+  public let isMock: Swift.Bool
+  public let filterLatitude: Swift.Double
+  public let filterLongitude: Swift.Double
+  public let verdict: Swift.String
+  public let reason: Swift.String
+  public let isAccepted: Swift.Bool
+  public let motionState: TrackerGeo.MotionState
+  public let detectedActivity: TrackerGeo.ActivityType?
+  public let activityStartTimeMs: Swift.Int64
+  public let odometerM: Swift.Double
+  public static func == (a: TrackerCore.RawPoint, b: TrackerCore.RawPoint) -> Swift.Bool
+  public typealias ID = Swift.Int64
+}
+public struct TrackSession : Swift.Sendable, Swift.Equatable, Swift.Identifiable {
+  public let id: Swift.String
+  public let startedAtMs: Swift.Int64
+  public let endedAtMs: Swift.Int64?
+  public let tag: Swift.String?
+  public let configSnapshot: Swift.String?
+  public var isOpen: Swift.Bool {
+    get
+  }
+  public static func == (a: TrackerCore.TrackSession, b: TrackerCore.TrackSession) -> Swift.Bool
+  public typealias ID = Swift.String
+}
+public protocol PendingUploadStore : Swift.Sendable {
+  func pending(limit: Swift.Int) async throws -> [TrackerGeo.TrackPoint]
+  func pendingCount() async throws -> Swift.Int
+  func markSynced(uuids: [Swift.String], syncedAtMs: Swift.Int64) async throws
+  func clearQueue() async throws
+}
+public enum AccuracyProfile : Swift.String, Swift.Sendable, Swift.Codable {
+  case strict
+  case balanced
+  case relaxed
+  case custom
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct AccuracyConfig : Swift.Sendable, Swift.Codable, Swift.Equatable {
+  public var profile: TrackerCore.AccuracyProfile
+  public var maxAccuracyMeters: Swift.Float?
+  public var recoveryTrustMeters: Swift.Float?
+  public init()
+  public var maxAccuracyM: Swift.Float {
+    get
+  }
+  public var recoveryTrustM: Swift.Float {
+    get
+  }
+  public func validate() -> [Swift.String]
+  public init(from decoder: any Swift.Decoder) throws
+  public static func == (a: TrackerCore.AccuracyConfig, b: TrackerCore.AccuracyConfig) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+public enum TrackerResult<Success> : Swift.Sendable where Success : Swift.Sendable {
+  case success(Success)
+  case failure(code: TrackerCore.ErrorCode, message: Swift.String)
+}
+@_hasMissingDesignatedInitializers @_Concurrency.MainActor final public class TrackerState {
+  @_Concurrency.MainActor final public var isReady: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor final public var isTracking: Swift.Bool {
+    get
+  }
+  @_Concurrency.MainActor final public var motionState: TrackerGeo.MotionState {
+    get
+  }
+  @_Concurrency.MainActor final public var providerState: TrackerCore.ProviderState {
+    get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor final public var currentSessionID: Swift.String? {
+    get
+  }
+  #endif
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers final public class Tracker : Swift.Sendable {
+  public static let shared: TrackerCore.Tracker
+  final public let state: TrackerCore.TrackerState
+  @discardableResult
+  final public func ready(_ config: TrackerCore.TrackerConfig = TrackerConfig()) async -> TrackerCore.TrackerResult<TrackerCore.TrackerState>
+  #if compiler(>=5.3) && $NonescapableTypes
+  @discardableResult
+  final public func start(tag: Swift.String? = nil) async -> TrackerCore.TrackerResult<TrackerCore.TrackSession>
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @discardableResult
+  final public func stop() async -> TrackerCore.TrackerResult<TrackerCore.TrackSession?>
+  #endif
+  final public func getPoints(_ query: TrackerCore.PointQuery = PointQuery()) async throws -> [TrackerGeo.TrackPoint]
+  final public func observePoints(sessionID: Swift.String) -> _Concurrency.AsyncStream<[TrackerGeo.TrackPoint]>
+  final public func getCount(_ query: TrackerCore.PointQuery = PointQuery()) async throws -> Swift.Int
+  final public func getOdometerMeters() async throws -> Swift.Double
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func getSessions(fromMs: Swift.Int64? = nil, toMs: Swift.Int64? = nil) async throws -> [TrackerCore.TrackSession]
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func currentSession() async throws -> TrackerCore.TrackSession?
+  #endif
+  final public func getCurrentLocation(feedIngestor: Swift.Bool = false) async -> TrackerCore.TrackerResult<TrackerGeo.TrackFix>
+  @discardableResult
+  final public func changePace(isMoving: Swift.Bool) async -> TrackerCore.TrackerResult<Swift.Void>
+  final public func addGeofence(_ fence: TrackerCore.Geofence) async -> TrackerCore.TrackerResult<TrackerCore.Geofence>
+  final public func getGeofences() async -> [TrackerCore.Geofence]
+  @discardableResult
+  final public func removeGeofence(id: Swift.String) async -> Swift.Bool
+  @discardableResult
+  final public func removeAllGeofences() async -> Swift.Int
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func getGeofenceEvents(geofenceID: Swift.String? = nil, limit: Swift.Int = 200, offset: Swift.Int = 0) async throws -> [TrackerCore.GeofenceEvent]
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func deleteGeofenceEvents(geofenceID: Swift.String? = nil) async throws
+  #endif
+  final public func setRoadSnapProvider(_ provider: any TrackerGeo.RoadSnapProvider)
+  final public func buildTrack(_ query: TrackerCore.PointQuery = PointQuery(), options: TrackerGeo.TrackOptions = TrackOptions()) async throws -> TrackerGeo.Track
+  final public func exportPolylineJSON(_ query: TrackerCore.PointQuery = PointQuery(), options: TrackerGeo.TrackOptions = TrackOptions()) async throws -> Swift.String
+  final public func exportGeoJSON(_ query: TrackerCore.PointQuery = PointQuery(), options: TrackerGeo.TrackOptions = TrackOptions()) async throws -> Swift.String
+  final public func liveTrack() -> _Concurrency.AsyncStream<TrackerGeo.LiveTrackUpdate>
+  final public func setActiveRoute(_ route: [TrackerGeo.GeoPoint]) async
+  final public func isOffRoute() async -> Swift.Bool
+  final public var pendingUploads: any TrackerCore.PendingUploadStore {
+    get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func setSyncTrigger(_ trigger: (@Sendable () async -> Swift.Void)?) async
+  #endif
+  @_Concurrency.MainActor final public func permissions() -> TrackerCore.PermissionManager
+  @_Concurrency.MainActor final public func authorizationTier() -> TrackerCore.AuthorizationTier
+  final public func providerState() -> _Concurrency.AsyncStream<TrackerCore.ProviderState>
+  @_Concurrency.MainActor final public func currentProviderState() -> TrackerCore.ProviderState
+  final public func getSensors() -> TrackerCore.DeviceSensors
+  final public func batteryInfo() -> TrackerCore.BatteryInfo
+  final public func batteryState() -> _Concurrency.AsyncStream<TrackerCore.BatteryInfo>
+  final public func events() -> _Concurrency.AsyncStream<TrackerCore.TrackerEvent>
+  final public func getRawFixes(sessionID: Swift.String) async throws -> [TrackerCore.RawFix]
+  final public func getRawPoints(sessionID: Swift.String) async throws -> [TrackerCore.RawPoint]
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func getDecisions(sessionID: Swift.String? = nil, limit: Swift.Int = 200, offset: Swift.Int = 0) async throws -> [TrackerGeo.FixDecision]
+  #endif
+  final public func offerFix(_ fix: TrackerGeo.TrackFix) async
+  final public func exportFixture(sessionID: Swift.String, name: Swift.String) async throws -> Swift.String
+  @objc deinit
+}
+extension TrackerCore.TrackerState : nonisolated Observation.Observable {
+}
+public struct TrackerConfig : Swift.Sendable, Swift.Codable, Swift.Equatable {
+  public var geolocation: TrackerCore.GeolocationConfig
+  public var motion: TrackerCore.MotionConfig
+  public var service: TrackerCore.ServiceConfig
+  public var persistence: TrackerCore.PersistenceConfig
+  public var sensors: TrackerCore.SensorConfig
+  public var reset: Swift.Bool
+  public var license: Swift.String?
+  public init()
+  public init(from decoder: any Swift.Decoder) throws
+  public static func == (a: TrackerCore.TrackerConfig, b: TrackerCore.TrackerConfig) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+public struct GeolocationConfig : Swift.Sendable, Swift.Codable, Swift.Equatable {
+  public var trackingMode: TrackerCore.TrackingMode
+  public var desiredAccuracy: TrackerCore.DesiredAccuracy
+  public var accuracy: TrackerCore.AccuracyConfig
+  public var intervalMs: Swift.Int64
+  public var vehicularIntervalMs: Swift.Int64
+  public var adaptiveCadence: Swift.Bool
+  public var turnBurst: Swift.Bool
+  public var turnBurstIntervalMs: Swift.Int64
+  public var navigationMode: Swift.Bool
+  public var navigationIntervalMs: Swift.Int64
+  public var deliveryStalenessMs: Swift.Int64
+  public var oneShotTimeoutMs: Swift.Int64
+  public var mockLocationPolicy: TrackerGeo.MockPolicy
+  public init()
+  public init(from decoder: any Swift.Decoder) throws
+  public static func == (a: TrackerCore.GeolocationConfig, b: TrackerCore.GeolocationConfig) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+public struct MotionConfig : Swift.Sendable, Swift.Codable, Swift.Equatable {
+  public var activityRecognition: Swift.Bool
+  public var activityConfidenceMin: Swift.Int
+  public var snapshotConfidenceMin: Swift.Int
+  public var stopTimeoutMin: Swift.Int
+  public var stationaryRadiusM: Swift.Double
+  public var motionTriggerDelaySec: Swift.Int
+  public var heartbeatIntervalSec: Swift.Int
+  public var bearingChangeCaptureDeg: Swift.Int
+  public var stillConfidenceMin: Swift.Int
+  public var stopOnStationary: Swift.Bool
+  public var disableStopDetection: Swift.Bool
+  public init()
+  public init(from decoder: any Swift.Decoder) throws
+  public static func == (a: TrackerCore.MotionConfig, b: TrackerCore.MotionConfig) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+public struct ServiceConfig : Swift.Sendable, Swift.Codable, Swift.Equatable {
+  public var backgroundLocationIndicator: Swift.Bool
+  public var healthLoopSec: Swift.Int
+  public var backstopIntervalMin: Swift.Int
+  public var deadTrackerMovingMin: Swift.Int
+  public var deadTrackerStationaryMin: Swift.Int
+  public init()
+  public init(from decoder: any Swift.Decoder) throws
+  public static func == (a: TrackerCore.ServiceConfig, b: TrackerCore.ServiceConfig) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+public struct PersistenceConfig : Swift.Sendable, Swift.Codable, Swift.Equatable {
+  public var maxDaysToPersist: Swift.Int
+  public var persistRawFixes: Swift.Bool
+  public var rawFixRingCapacity: Swift.Int
+  public var persistRawPoints: Swift.Bool
+  public var rawPointRingCapacity: Swift.Int
+  public var persistDecisions: Swift.Bool
+  public var decisionRetentionDays: Swift.Int
+  public var decisionMaxRows: Swift.Int
+  public var persistHeartbeat: Swift.Bool
+  public init()
+  public init(from decoder: any Swift.Decoder) throws
+  public static func == (a: TrackerCore.PersistenceConfig, b: TrackerCore.PersistenceConfig) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+public struct SensorConfig : Swift.Sendable, Swift.Codable, Swift.Equatable {
+  public var useStepCorroboration: Swift.Bool
+  public var useSignificantLocationChange: Swift.Bool
+  public var useStationaryFence: Swift.Bool
+  public var useAccelerometerVeto: Swift.Bool
+  public var useBarometer: Swift.Bool
+  public var activityRecognitionIntervalMs: Swift.Int64
+  public init()
+  public init(from decoder: any Swift.Decoder) throws
+  public static func == (a: TrackerCore.SensorConfig, b: TrackerCore.SensorConfig) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+public enum TrackingMode : Swift.String, Swift.Sendable, Swift.Codable {
+  case continuous
+  case adaptive
+  case motionOnly
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum DesiredAccuracy : Swift.String, Swift.Sendable, Swift.Codable {
+  case high, balanced, low
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+extension TrackerCore.TrackerConfig {
+  public func validate() -> [Swift.String]
+}
+public struct TrackerConfigError : Swift.Error, Swift.Sendable, Swift.Equatable, Foundation.LocalizedError, Swift.CustomStringConvertible {
+  public let problems: [Swift.String]
+  public var description: Swift.String {
+    get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  public var errorDescription: Swift.String? {
+    get
+  }
+  #endif
+  public static func == (a: TrackerCore.TrackerConfigError, b: TrackerCore.TrackerConfigError) -> Swift.Bool
+}
+extension TrackerCore.TrackerConfig {
+  public static func builder() -> TrackerCore.TrackerConfig.Builder
+  @_hasMissingDesignatedInitializers final public class Builder {
+    final public func geolocation(_ value: TrackerCore.GeolocationConfig) -> TrackerCore.TrackerConfig.Builder
+    final public func motion(_ value: TrackerCore.MotionConfig) -> TrackerCore.TrackerConfig.Builder
+    final public func service(_ value: TrackerCore.ServiceConfig) -> TrackerCore.TrackerConfig.Builder
+    final public func persistence(_ value: TrackerCore.PersistenceConfig) -> TrackerCore.TrackerConfig.Builder
+    final public func sensors(_ value: TrackerCore.SensorConfig) -> TrackerCore.TrackerConfig.Builder
+    final public func reset(_ value: Swift.Bool) -> TrackerCore.TrackerConfig.Builder
+    #if compiler(>=5.3) && $NonescapableTypes
+    final public func license(_ value: Swift.String?) -> TrackerCore.TrackerConfig.Builder
+    #endif
+    final public func trackingMode(_ value: TrackerCore.TrackingMode) -> TrackerCore.TrackerConfig.Builder
+    final public func desiredAccuracy(_ value: TrackerCore.DesiredAccuracy) -> TrackerCore.TrackerConfig.Builder
+    final public func intervalMs(_ value: Swift.Int64) -> TrackerCore.TrackerConfig.Builder
+    final public func vehicularIntervalMs(_ value: Swift.Int64) -> TrackerCore.TrackerConfig.Builder
+    final public func adaptiveCadence(_ value: Swift.Bool) -> TrackerCore.TrackerConfig.Builder
+    final public func turnBurst(_ value: Swift.Bool) -> TrackerCore.TrackerConfig.Builder
+    final public func turnBurstIntervalMs(_ value: Swift.Int64) -> TrackerCore.TrackerConfig.Builder
+    final public func navigationMode(_ value: Swift.Bool) -> TrackerCore.TrackerConfig.Builder
+    final public func navigationIntervalMs(_ value: Swift.Int64) -> TrackerCore.TrackerConfig.Builder
+    final public func mockLocationPolicy(_ value: TrackerGeo.MockPolicy) -> TrackerCore.TrackerConfig.Builder
+    final public func accuracyProfile(_ value: TrackerCore.AccuracyProfile) -> TrackerCore.TrackerConfig.Builder
+    final public func maxAccuracyMeters(_ value: Swift.Float) -> TrackerCore.TrackerConfig.Builder
+    final public func recoveryTrustMeters(_ value: Swift.Float) -> TrackerCore.TrackerConfig.Builder
+    final public func activityRecognition(_ value: Swift.Bool) -> TrackerCore.TrackerConfig.Builder
+    final public func stopTimeoutMin(_ value: Swift.Int) -> TrackerCore.TrackerConfig.Builder
+    final public func stationaryRadiusM(_ value: Swift.Double) -> TrackerCore.TrackerConfig.Builder
+    final public func motionTriggerDelaySec(_ value: Swift.Int) -> TrackerCore.TrackerConfig.Builder
+    final public func stopOnStationary(_ value: Swift.Bool) -> TrackerCore.TrackerConfig.Builder
+    final public func disableStopDetection(_ value: Swift.Bool) -> TrackerCore.TrackerConfig.Builder
+    final public func persistHeartbeat(_ value: Swift.Bool) -> TrackerCore.TrackerConfig.Builder
+    final public func useAccelerometerVeto(_ value: Swift.Bool) -> TrackerCore.TrackerConfig.Builder
+    final public func useBarometer(_ value: Swift.Bool) -> TrackerCore.TrackerConfig.Builder
+    final public func activityRecognitionIntervalMs(_ value: Swift.Int64) -> TrackerCore.TrackerConfig.Builder
+    final public func bearingChangeCaptureDeg(_ value: Swift.Int) -> TrackerCore.TrackerConfig.Builder
+    final public func maxDaysToPersist(_ value: Swift.Int) -> TrackerCore.TrackerConfig.Builder
+    final public func persistRawFixes(_ value: Swift.Bool) -> TrackerCore.TrackerConfig.Builder
+    final public func persistRawPoints(_ value: Swift.Bool) -> TrackerCore.TrackerConfig.Builder
+    final public func persistDecisions(_ value: Swift.Bool) -> TrackerCore.TrackerConfig.Builder
+    final public func useStepCorroboration(_ value: Swift.Bool) -> TrackerCore.TrackerConfig.Builder
+    final public func useSignificantLocationChange(_ value: Swift.Bool) -> TrackerCore.TrackerConfig.Builder
+    final public func useStationaryFence(_ value: Swift.Bool) -> TrackerCore.TrackerConfig.Builder
+    final public func build() throws -> TrackerCore.TrackerConfig
+    final public func buildUnchecked() -> TrackerCore.TrackerConfig
+    @objc deinit
+  }
+}
+extension TrackerCore.DesiredAccuracy : Swift.Equatable {}
+extension TrackerCore.DesiredAccuracy : Swift.Hashable {}
+extension TrackerCore.DesiredAccuracy : Swift.RawRepresentable {}
+extension TrackerCore.MotionQuality : Swift.Equatable {}
+extension TrackerCore.MotionQuality : Swift.Hashable {}
+extension TrackerCore.MotionQuality : Swift.RawRepresentable {}
+extension TrackerCore.MotionAuthorization : Swift.Equatable {}
+extension TrackerCore.MotionAuthorization : Swift.Hashable {}
+extension TrackerCore.MotionAuthorization : Swift.RawRepresentable {}
+extension TrackerCore.PermissionManager : Swift.Sendable {}
+extension TrackerCore.AuthorizationTier : Swift.Equatable {}
+extension TrackerCore.AuthorizationTier : Swift.Hashable {}
+extension TrackerCore.AuthorizationTier : Swift.RawRepresentable {}
+extension TrackerCore.LocationAccuracy : Swift.Equatable {}
+extension TrackerCore.LocationAccuracy : Swift.Hashable {}
+extension TrackerCore.LocationAccuracy : Swift.RawRepresentable {}
+extension TrackerCore.PowerSource : Swift.Equatable {}
+extension TrackerCore.PowerSource : Swift.Hashable {}
+extension TrackerCore.PowerSource : Swift.RawRepresentable {}
+extension TrackerCore.ErrorCode : Swift.Equatable {}
+extension TrackerCore.ErrorCode : Swift.Hashable {}
+extension TrackerCore.ErrorCode : Swift.RawRepresentable {}
+extension TrackerCore.GeofenceTransition : Swift.Equatable {}
+extension TrackerCore.GeofenceTransition : Swift.Hashable {}
+extension TrackerCore.GeofenceTransition : Swift.RawRepresentable {}
+extension TrackerCore.AccuracyProfile : Swift.Equatable {}
+extension TrackerCore.AccuracyProfile : Swift.Hashable {}
+extension TrackerCore.AccuracyProfile : Swift.RawRepresentable {}
+extension TrackerCore.TrackerState : Swift.Sendable {}
+extension TrackerCore.TrackingMode : Swift.Equatable {}
+extension TrackerCore.TrackingMode : Swift.Hashable {}
+extension TrackerCore.TrackingMode : Swift.RawRepresentable {}

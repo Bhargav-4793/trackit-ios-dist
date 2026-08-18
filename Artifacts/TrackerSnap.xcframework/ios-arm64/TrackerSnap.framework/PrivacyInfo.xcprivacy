@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- TrackerSnap transmits coordinates to an OSRM endpoint to map-match them,
+         so precise location leaves the device even though this target never
+         captures it. Declared as collected for that reason.
+
+         NSPrivacyTrackingDomains stays empty on purpose: the endpoint is supplied
+         by the host (there is no default URL, by design), so this SDK cannot name
+         a domain. A host pointing it at a tracking domain must declare that in
+         its own manifest. -->
+    <key>NSPrivacyTracking</key><false/>
+    <key>NSPrivacyTrackingDomains</key><array/>
+
+    <key>NSPrivacyCollectedDataTypes</key>
+    <array>
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypePreciseLocation</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key><false/>
+            <key>NSPrivacyCollectedDataTypeTracking</key><false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array><string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string></array>
+        </dict>
+    </array>
+
+    <key>NSPrivacyAccessedAPITypes</key><array/>
+</dict>
+</plist>

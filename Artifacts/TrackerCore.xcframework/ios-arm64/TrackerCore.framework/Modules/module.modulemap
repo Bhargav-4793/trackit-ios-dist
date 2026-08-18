@@ -1,0 +1,4 @@
+framework module TrackerCore {
+  header "TrackerCore-Swift.h"
+  requires objc
+}

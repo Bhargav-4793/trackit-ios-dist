@@ -1,0 +1,120 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.2.1 (swiftlang-6.2.1.4.8 clang-1700.4.4.1)
+// swift-module-flags: -target arm64-apple-ios17.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 6 -enforce-exclusivity=unchecked -O -enable-experimental-feature DebugDescriptionMacro -module-name TrackerSync -package-name Tracker
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.2.1
+import BackgroundTasks
+import Foundation
+import Swift
+import TrackerCore
+import TrackerGeo
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+import os
+public struct SyncConfig : Swift.Sendable, Swift.Equatable, Swift.Codable {
+  public var url: Foundation.URL
+  public var method: Swift.String
+  public var headers: [Swift.String : Swift.String]
+  public var autoSync: Swift.Bool
+  public var batchSize: Swift.Int
+  public var requiresNetworkConnectivity: Swift.Bool
+  public var wipeOnAuthExpiry: Swift.Bool
+  public var stopTrackingOnAuthExpiry: Swift.Bool
+  public var backoffInitialSec: Swift.Double
+  public var backoffCeilingSec: Swift.Double
+  public var autoSyncCoalesceSec: Swift.Double
+  public init(url: Foundation.URL)
+  public init(from decoder: any Swift.Decoder) throws
+  public static func == (a: TrackerSync.SyncConfig, b: TrackerSync.SyncConfig) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+@_hasMissingDesignatedInitializers final public class SyncEngine : Swift.Sendable {
+  public static let shared: TrackerSync.SyncEngine
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func configure(_ config: TrackerSync.SyncConfig, store: any TrackerCore.PendingUploadStore, transport: (any TrackerSync.SyncTransport)? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public var endpoint: Foundation.URL? {
+    get
+  }
+  #endif
+  final public var isConfigured: Swift.Bool {
+    get
+  }
+  final public func requestSync()
+  @discardableResult
+  final public func syncNow() async -> TrackerSync.SyncQueue.Result
+  final public func healthLoopTrigger() -> @Sendable () async -> Swift.Void
+  final public func pendingCount() async -> TrackerCore.TrackerResult<Swift.Int>
+  final public func events() -> _Concurrency.AsyncStream<TrackerSync.SyncEvent>
+  @objc deinit
+}
+public enum SyncEvent : Swift.Sendable {
+  case httpResponse(statusCode: Swift.Int?, count: Swift.Int)
+  case uploaded(count: Swift.Int)
+  case retryScheduled(afterSec: Swift.Double, reason: Swift.String)
+  case authExpired
+}
+public struct SyncPayload : Swift.Codable, Swift.Sendable {
+  public let location: [TrackerSync.SyncPoint]
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct SyncPoint : Swift.Codable, Swift.Sendable {
+  public let uuid: Swift.String
+  public let timeMs: Swift.Int64
+  public let localDate: Swift.String
+  public let latitude: Swift.Double
+  public let longitude: Swift.Double
+  public let accuracyM: Swift.Float
+  public let movementSpeedMps: Swift.Float
+  public let provider: Swift.String
+  public let hasSpeed: Swift.Bool
+  public let hasBearing: Swift.Bool
+  public let timezone: Swift.String
+  public let activityStatus: Swift.String
+  public let detectedActivityType: Swift.String?
+  public let detectedActivityStartTimeMs: Swift.Int64
+  public let batteryPercentage: Swift.String?
+  public let isShowPin: Swift.String
+  public let isMock: Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct SyncRequest : Swift.Sendable {
+  public let url: Foundation.URL
+  public let method: Swift.String
+  public let headers: [Swift.String : Swift.String]
+  public let payload: TrackerSync.SyncPayload
+  public let body: Foundation.Data
+}
+public protocol PendingUploadWiper : Swift.Sendable {
+  func wipeQueue() async throws
+}
+@_hasMissingDesignatedInitializers public actor SyncQueue {
+  public enum Result : Swift.Sendable {
+    case uploaded(count: Swift.Int)
+    case empty
+    case retry(reason: Swift.String)
+    case authExpired
+  }
+  @objc deinit
+  @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+  @_semantics("defaultActor") nonisolated final public var unownedExecutor: _Concurrency.UnownedSerialExecutor {
+    get
+  }
+}
+public enum SyncResponse : Swift.Sendable {
+  case success(code: Swift.Int)
+  case unauthorized
+  case failure(code: Swift.Int?, message: Swift.String)
+}
+public protocol SyncTransport : Swift.Sendable {
+  func upload(_ request: TrackerSync.SyncRequest) async -> TrackerSync.SyncResponse
+}
+final public class URLSessionSyncTransport : TrackerSync.SyncTransport, @unchecked Swift.Sendable {
+  convenience public init()
+  public init(session: Foundation.URLSession)
+  final public func upload(_ request: TrackerSync.SyncRequest) async -> TrackerSync.SyncResponse
+  @objc deinit
+}

@@ -1,0 +1,4 @@
+framework module TrackerMaps {
+  header "TrackerMaps-Swift.h"
+  requires objc
+}

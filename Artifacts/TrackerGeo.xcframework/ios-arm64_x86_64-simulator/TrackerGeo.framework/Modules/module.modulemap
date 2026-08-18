@@ -1,0 +1,4 @@
+framework module TrackerGeo {
+  header "TrackerGeo-Swift.h"
+  requires objc
+}

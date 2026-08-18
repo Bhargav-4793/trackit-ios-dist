@@ -1,0 +1,9 @@
+.DS_Store
+DerivedData/
+xcuserdata/
+.swiftpm/
+Package.resolved
+
+# The example's OSRM endpoint. The template is committed; the real file is not.
+Examples/SampleApp/SampleApp/Resources/Sample.xcconfig
+build/

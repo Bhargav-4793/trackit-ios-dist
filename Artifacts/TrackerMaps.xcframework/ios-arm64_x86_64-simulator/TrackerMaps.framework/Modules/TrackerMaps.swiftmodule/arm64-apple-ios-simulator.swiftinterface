@@ -1,0 +1,108 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.2.1 (swiftlang-6.2.1.4.8 clang-1700.4.4.1)
+// swift-module-flags: -target arm64-apple-ios17.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 6 -enforce-exclusivity=unchecked -O -enable-experimental-feature DebugDescriptionMacro -module-name TrackerMaps -package-name Tracker
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.2.1
+import CoreGraphics
+import CoreLocation
+import Foundation
+import MapKit
+import QuartzCore
+import Swift
+import SwiftUI
+import TrackerGeo
+import UIKit
+import _Concurrency
+import _MapKit_SwiftUI
+import _StringProcessing
+import _SwiftConcurrencyShims
+import os
+@_Concurrency.MainActor @preconcurrency public struct LiveTrackMapView : SwiftUI.UIViewRepresentable {
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor @preconcurrency public init(update: TrackerGeo.LiveTrackUpdate?, options: TrackerMaps.LiveOptions = LiveOptions(), isFollowing: SwiftUICore.Binding<Swift.Bool>? = nil, initialCentre: TrackerGeo.GeoPoint? = nil)
+  #endif
+  @_Concurrency.MainActor @preconcurrency public let update: TrackerGeo.LiveTrackUpdate?
+  @_Concurrency.MainActor @preconcurrency public var options: TrackerMaps.LiveOptions
+  @_Concurrency.MainActor @preconcurrency public func makeCoordinator() -> TrackerMaps.LiveTrackMapCoordinator
+  @_Concurrency.MainActor @preconcurrency public func makeUIView(context: TrackerMaps.LiveTrackMapView.Context) -> MapKit.MKMapView
+  @_Concurrency.MainActor @preconcurrency public func updateUIView(_ mapView: MapKit.MKMapView, context: TrackerMaps.LiveTrackMapView.Context)
+  @_Concurrency.MainActor @preconcurrency public static func dismantleUIView(_ uiView: MapKit.MKMapView, coordinator: TrackerMaps.LiveTrackMapCoordinator)
+  public typealias Body = Swift.Never
+  public typealias Coordinator = TrackerMaps.LiveTrackMapCoordinator
+  public typealias UIViewType = MapKit.MKMapView
+}
+@_hasMissingDesignatedInitializers @_Concurrency.MainActor final public class LiveTrackMapCoordinator {
+  @objc deinit
+}
+extension TrackerGeo.Bounds {
+  public func mapRect(minimumSpanMeters: _LocationEssentials.CLLocationDistance = 200) -> MapKit.MKMapRect
+}
+public enum CameraZoom {
+  #if compiler(>=5.3) && $NonescapableTypes
+  public static func level(longitudeSpanDeg: Swift.Double, viewportWidthPoints: Swift.Double) -> Swift.Float?
+  #endif
+}
+public struct RenderOptions : Swift.Sendable {
+  public var basePathColor: SwiftUICore.Color
+  public var basePathWidth: CoreFoundation.CGFloat
+  public var speedOverlayWidth: CoreFoundation.CGFloat
+  public var speedOverlayOpacity: Swift.Double
+  public var speedBandGreen: SwiftUICore.Color
+  public var speedBandYellow: SwiftUICore.Color
+  public var speedBandRed: SwiftUICore.Color
+  public var cameraPadding: CoreFoundation.CGFloat
+  public var twoPointCameraPadding: CoreFoundation.CGFloat
+  public var arrowSize: CoreFoundation.CGFloat
+  public var stopPinSize: CoreFoundation.CGFloat
+  public var ongoingPulseSeconds: Swift.Double
+  public var showStopPins: Swift.Bool
+  public var showArrows: Swift.Bool
+  public init()
+}
+public struct LiveOptions : Swift.Sendable {
+  public var tailColor: SwiftUICore.Color
+  public var tailWidth: CoreFoundation.CGFloat
+  public var headColor: SwiftUICore.Color
+  public var headWidth: CoreFoundation.CGFloat
+  public var puckColor: SwiftUICore.Color
+  public var puckSize: CoreFoundation.CGFloat
+  public var haloColor: SwiftUICore.Color
+  public var haloFillOpacity: Swift.Double
+  public var haloStrokeOpacity: Swift.Double
+  public var lookaheadMs: Swift.Int64
+  public var animationDurationMs: Swift.Int64
+  public var followMode: TrackerMaps.CameraFollowMode
+  public var followDistanceMeters: Swift.Double
+  public var followPitchDegrees: CoreFoundation.CGFloat
+  public init()
+}
+public enum CameraFollowMode : Swift.Sendable, Swift.Equatable {
+  case none
+  case follow
+  case followBearing
+  public static func == (a: TrackerMaps.CameraFollowMode, b: TrackerMaps.CameraFollowMode) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+@_Concurrency.MainActor public enum TrackIcons {
+  @_Concurrency.MainActor public static func chevron(size: CoreFoundation.CGFloat, color: UIKit.UIColor = .white) -> UIKit.UIImage
+  @_Concurrency.MainActor public static func numberedPin(number: Swift.Int, size: CoreFoundation.CGFloat) -> UIKit.UIImage
+  @_Concurrency.MainActor public static func puck(size: CoreFoundation.CGFloat, color: UIKit.UIColor) -> UIKit.UIImage
+}
+@_Concurrency.MainActor @preconcurrency public struct TrackMapView : SwiftUICore.View {
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor @preconcurrency public init(track: TrackerGeo.Track, options: TrackerMaps.RenderOptions = RenderOptions(), onArrowZoomChange: ((Swift.Float) -> Swift.Void)? = nil)
+  #endif
+  @_Concurrency.MainActor @preconcurrency public let track: TrackerGeo.Track
+  @_Concurrency.MainActor @preconcurrency public var options: TrackerMaps.RenderOptions
+  @_Concurrency.MainActor @preconcurrency public var body: some SwiftUICore.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s11TrackerMaps12TrackMapViewV4bodyQrvp", 0) __
+}
+extension TrackerMaps.LiveTrackMapView : Swift.Sendable {}
+extension TrackerMaps.LiveTrackMapCoordinator : Swift.Sendable {}
+extension TrackerMaps.CameraFollowMode : Swift.Hashable {}
+extension TrackerMaps.TrackIcons : Swift.Sendable {}
+extension TrackerMaps.TrackMapView : Swift.Sendable {}

@@ -1,0 +1,16 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.2.1 (swiftlang-6.2.1.4.8 clang-1700.4.4.1)
+// swift-module-flags: -target arm64-apple-ios17.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 6 -enforce-exclusivity=unchecked -O -enable-experimental-feature DebugDescriptionMacro -module-name TrackerSnap -package-name Tracker
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.2.1
+import Foundation
+import Swift
+import TrackerGeo
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+import os
+public struct OSRMSnapProvider : TrackerGeo.RoadSnapProvider {
+  public init(baseURL: Foundation.URL, profile: Swift.String = "driving", session: Foundation.URLSession = .shared, chunkSize: Swift.Int = 90, searchRadiusM: Swift.Int = 40, headers: [Swift.String : Swift.String] = [:], minConfidence: Swift.Double = 0.3, cacheEntries: Swift.Int = 60)
+  public func snap(request: TrackerGeo.SnapRequest) async throws -> [TrackerGeo.GeoPoint]
+  public func snap(path: [TrackerGeo.GeoPoint]) async throws -> [TrackerGeo.GeoPoint]
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Tracker records your route while you are using the app.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Tracker records your route in the background so your trips are complete even when the app is closed.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Tracker uses motion data to detect when you start and stop moving, so it can save battery.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+		<string>processing</string>
+	</array>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.fieldtrack360.tracker.backstop</string>
+		<string>com.fieldtrack360.tracker.sync</string>
+	</array>
+	<key>OSRM_BASE_URL</key>
+	<string>$(OSRM_BASE_URL)</string>
+</dict>
+</plist>

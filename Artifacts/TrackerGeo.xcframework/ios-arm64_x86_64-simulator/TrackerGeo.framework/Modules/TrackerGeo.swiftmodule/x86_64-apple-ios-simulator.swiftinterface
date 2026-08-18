@@ -1,0 +1,420 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.2.1 (swiftlang-6.2.1.4.8 clang-1700.4.4.1)
+// swift-module-flags: -target x86_64-apple-ios17.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 6 -enforce-exclusivity=unchecked -O -enable-experimental-feature DebugDescriptionMacro -module-name TrackerGeo -package-name Tracker
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.2.1
+import CryptoKit
+import Foundation
+import Swift
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+public enum MovementStatus : Swift.String, Swift.Sendable, Swift.Codable {
+  case steady, moving
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum ActivityType : Swift.String, Swift.Sendable, Swift.Codable {
+  case inVehicle, onBicycle, onFoot, walking, running, still, tilting, unknown
+  public var isLowTier: Swift.Bool {
+    get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum MotionState : Swift.String, Swift.Sendable, Swift.Codable {
+  case stopped, moving, stopPending, stationary
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum MockPolicy : Swift.String, Swift.Sendable, Swift.Codable {
+  case flag, reject, allow
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum Verdict : Swift.Sendable, Swift.Equatable {
+  case accept(reason: Swift.String)
+  case skip(reason: Swift.String)
+  case reject(reason: Swift.String)
+  public var reason: Swift.String {
+    get
+  }
+  public static func == (a: TrackerGeo.Verdict, b: TrackerGeo.Verdict) -> Swift.Bool
+}
+public enum Reasons {
+  public static let initial: Swift.String
+  public static let resume: Swift.String
+  public static let burst: Swift.String
+  public static let nlpFallback: Swift.String
+  public static let impossibleSpeed: Swift.String
+  public static let poorAccuracy: Swift.String
+  public static let recoveryConfirmed: Swift.String
+  public static let recoveryReset: Swift.String
+  public static let recoveryHeld: Swift.String
+  public static let sigmaGateOutlier: Swift.String
+  public static let sigmaForcedReset: Swift.String
+  public static let sigmaJunkFail: Swift.String
+  public static let vehicular: Swift.String
+  public static let movingWalking: Swift.String
+  public static let bearingChange: Swift.String
+  public static let arrival: Swift.String
+  public static let stationaryRecovery: Swift.String
+  public static let blackoutArrival: Swift.String
+  public static let walkArrival: Swift.String
+  public static let heartbeat: Swift.String
+  public static let heuristicGate: Swift.String
+  public static let originSet: Swift.String
+  public static let departureHeld: Swift.String
+  public static let driftSuppressed: Swift.String
+  public static let heartbeatSkipped: Swift.String
+  public static let mockLocation: Swift.String
+  public static let invalidCoordinates: Swift.String
+  public static let staleFix: Swift.String
+  public static let sessionClosed: Swift.String
+  public static let rebootBoundary: Swift.String
+  public static let outOfOrder: Swift.String
+}
+public struct FixDecision : Swift.Sendable, Swift.Equatable {
+  public let fix: TrackerGeo.TrackFix
+  public let verdict: TrackerGeo.Verdict
+  public let filterLatitude: Swift.Double
+  public let filterLongitude: Swift.Double
+  public let sigma: Swift.Float
+  public let threshold: Swift.Float
+  public let distanceMovedM: Swift.Double
+  public let effectiveSpeedMps: Swift.Float
+  public let motionState: TrackerGeo.MotionState
+  public var reason: Swift.String {
+    get
+  }
+  public var isAccept: Swift.Bool {
+    get
+  }
+  public static func == (a: TrackerGeo.FixDecision, b: TrackerGeo.FixDecision) -> Swift.Bool
+}
+public struct GeoPoint : Swift.Sendable, Swift.Equatable, Swift.Hashable, Swift.Codable {
+  public let latitude: Swift.Double
+  public let longitude: Swift.Double
+  public init(latitude: Swift.Double, longitude: Swift.Double)
+  public static func == (a: TrackerGeo.GeoPoint, b: TrackerGeo.GeoPoint) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct Bounds : Swift.Sendable, Swift.Equatable, Swift.Codable {
+  public let north: Swift.Double
+  public let south: Swift.Double
+  public let east: Swift.Double
+  public let west: Swift.Double
+  public init(north: Swift.Double, south: Swift.Double, east: Swift.Double, west: Swift.Double)
+  public static func == (a: TrackerGeo.Bounds, b: TrackerGeo.Bounds) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct TrackFix : Swift.Sendable, Swift.Equatable {
+  public let timeMs: Swift.Int64
+  public let monotonicNanos: Swift.Int64
+  public let receivedAtMonotonicNanos: Swift.Int64
+  public let latitude: Swift.Double
+  public let longitude: Swift.Double
+  public let accuracyM: Swift.Float
+  public let altitudeM: Swift.Double?
+  public let verticalAccuracyM: Swift.Float?
+  public let speedMps: Swift.Float
+  public let bearingDeg: Swift.Float
+  public let hasSpeed: Swift.Bool
+  public let hasBearing: Swift.Bool
+  public let provider: Swift.String
+  public let isMock: Swift.Bool
+  public let speedAccuracyMps: Swift.Float?
+  public let bearingAccuracyDeg: Swift.Float?
+  public static let unknownProvider: Swift.String
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(timeMs: Swift.Int64, monotonicNanos: Swift.Int64, receivedAtMonotonicNanos: Swift.Int64, latitude: Swift.Double, longitude: Swift.Double, accuracyM: Swift.Float, altitudeM: Swift.Double? = nil, verticalAccuracyM: Swift.Float? = nil, speedMps: Swift.Float = 0, bearingDeg: Swift.Float = 0, hasSpeed: Swift.Bool = false, hasBearing: Swift.Bool = false, provider: Swift.String = TrackFix.unknownProvider, isMock: Swift.Bool = false, speedAccuracyMps: Swift.Float? = nil, bearingAccuracyDeg: Swift.Float? = nil)
+  #endif
+  public var looksLikeNetworkFix: Swift.Bool {
+    get
+  }
+  public static func == (a: TrackerGeo.TrackFix, b: TrackerGeo.TrackFix) -> Swift.Bool
+}
+public struct TrackPoint : Swift.Sendable, Swift.Equatable, Swift.Identifiable {
+  public let id: Swift.Int64
+  public let uuid: Swift.String
+  public let sessionID: Swift.String
+  public let timeMs: Swift.Int64
+  public let monotonicNanos: Swift.Int64
+  public let localDate: Swift.String
+  public let timezone: Swift.String
+  public let latitude: Swift.Double
+  public let longitude: Swift.Double
+  public let accuracyM: Swift.Float
+  public let altitudeM: Swift.Double?
+  public let speedMps: Swift.Float
+  public let bearingDeg: Swift.Float
+  public let hasSpeed: Swift.Bool
+  public let hasBearing: Swift.Bool
+  public let provider: Swift.String
+  public let isMock: Swift.Bool
+  public let movementStatus: TrackerGeo.MovementStatus
+  public let detectedActivity: TrackerGeo.ActivityType?
+  public let activityStartTimeMs: Swift.Int64
+  public let odometerM: Swift.Double
+  public let batteryPct: Swift.Int?
+  public let isCharging: Swift.Bool?
+  public let isSignificantStop: Swift.Bool
+  public let extras: Swift.String?
+  public let acceptReason: Swift.String
+  public static func == (a: TrackerGeo.TrackPoint, b: TrackerGeo.TrackPoint) -> Swift.Bool
+  public typealias ID = Swift.Int64
+}
+public struct LiveTrackUpdate : Swift.Sendable {
+  public let sessionID: Swift.String
+  public let sequence: Swift.Int64
+  public let precision: Swift.Int
+  public let frozenTailPolyline: Swift.String
+  public let liveHead: [TrackerGeo.GeoPoint]
+  public let puck: TrackerGeo.PuckState?
+}
+public struct PuckState : Swift.Sendable {
+  public let latitude: Swift.Double
+  public let longitude: Swift.Double
+  public let speedMps: Swift.Float
+  public let headingDeg: Swift.Double?
+  public let accuracyM: Swift.Float
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(latitude: Swift.Double, longitude: Swift.Double, speedMps: Swift.Float, headingDeg: Swift.Double?, accuracyM: Swift.Float)
+  #endif
+}
+public struct Track : Swift.Sendable, Swift.Codable {
+  public let version: Swift.Int
+  public let sessionID: Swift.String?
+  public let generatedAtMs: Swift.Int64
+  public let from: Swift.Int64
+  public let to: Swift.Int64
+  public let timezone: Swift.String
+  public let precision: Swift.Int
+  public let bounds: TrackerGeo.Bounds?
+  public let stats: TrackerGeo.TrackStats
+  public let encodedPolyline: Swift.String
+  public let points: [TrackerGeo.TrackJSONPoint]
+  public let segments: [TrackerGeo.TrackSegment]
+  public let stops: [TrackerGeo.StopNode]
+  public let arrows: [TrackerGeo.ArrowAnchor]
+  public let warnings: [Swift.String]
+  public static let formatVersion: Swift.Int
+  public static var defaultPrecision: Swift.Int {
+    get
+  }
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct TrackStats : Swift.Sendable, Swift.Codable {
+  public let totalDistanceMeters: Swift.Double
+  public let totalDurationSec: Swift.Int64
+  public let movingDurationSec: Swift.Int64
+  public let stoppedDurationSec: Swift.Int64
+  public let activityBreakdownSec: [Swift.String : Swift.Int64]
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct TrackJSONPoint : Swift.Sendable, Swift.Codable {
+  public let timeMs: Swift.Int64
+  public let latitude: Swift.Double
+  public let longitude: Swift.Double
+  public let accuracyM: Swift.Float
+  public let speedMps: Swift.Float
+  public let bearingDeg: Swift.Float
+  public let activity: Swift.String?
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct TrackSegment : Swift.Sendable, Swift.Codable {
+  public let from: Swift.Int
+  public let to: Swift.Int
+  public let type: TrackerGeo.SegmentType
+  public let startMs: Swift.Int64
+  public let endMs: Swift.Int64
+  public let distanceMeters: Swift.Double
+  public let durationSec: Swift.Int64
+  public let avgSpeedMps: Swift.Float
+  public let maxSpeedMps: Swift.Float
+  public let p75SpeedMps: Swift.Float
+  public let activity: Swift.String?
+  public let activityIcon: Swift.String?
+  public let speedBand: Swift.String?
+  public let encodedPolyline: Swift.String
+  public let stopIndex: Swift.Int?
+  public let travelStartMs: Swift.Int64
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public enum SegmentType : Swift.String, Swift.Sendable, Swift.Codable, Swift.Equatable {
+  case travel, stop
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init?(rawValue: Swift.String)
+  #endif
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct StopNode : Swift.Sendable, Swift.Codable {
+  public let index: Swift.Int
+  public let latitude: Swift.Double
+  public let longitude: Swift.Double
+  public let arrivalMs: Swift.Int64
+  public let departureMs: Swift.Int64?
+  public let dwellSec: Swift.Int64
+  public let radiusM: Swift.Double
+  public let pointCount: Swift.Int
+  public let address: Swift.String?
+  public let isOngoing: Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct ArrowAnchor : Swift.Sendable, Swift.Codable {
+  public let latitude: Swift.Double
+  public let longitude: Swift.Double
+  public let bearing: Swift.Double
+  public let segment: Swift.Int
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct TrackOptions : Swift.Sendable {
+  public var zoom: Swift.Float
+  public var includeRawPoints: Swift.Bool
+  public var consolidateStops: Swift.Bool
+  public var stopRadiusM: Swift.Double
+  public var stopMinDwellSec: Swift.Int64
+  public var smoothing: TrackerGeo.Smoothing
+  public var splineSpacingM: Swift.Double
+  public var bezierMinAngleDeg: Swift.Double
+  public var bezierCutbackM: Swift.Double
+  public var snapToRoad: Swift.Bool
+  public var snapMaxOffRoadM: Swift.Double
+  public var polylinePrecision: Swift.Int
+  public var speedBandsKmph: [Swift.Float]
+  public var arrowMinSegmentM: Swift.Double
+  public var simplifyEpsilonM: Swift.Double
+  public init()
+}
+public enum Smoothing : Swift.Sendable, Swift.Equatable {
+  case none, spline, bezier
+  public static func == (a: TrackerGeo.Smoothing, b: TrackerGeo.Smoothing) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum ActivityName {
+  public static let flight: Swift.String
+  public static let train: Swift.String
+  public static let driving: Swift.String
+  public static let riding: Swift.String
+  public static let cycling: Swift.String
+  public static let running: Swift.String
+  public static let walking: Swift.String
+  public static let stationary: Swift.String
+  public static let vehicle: Swift.String
+}
+public enum SpeedBandName {
+  public static let green: Swift.String
+  public static let yellow: Swift.String
+  public static let red: Swift.String
+}
+public enum TrackWarning {
+  public static let mockLocationsPresent: Swift.String
+  public static let snapUnavailable: Swift.String
+  public static let coarseAccuracy: Swift.String
+  public static let truncated: Swift.String
+}
+public enum Arrows {
+  public static func shouldReplace(previousZoom: Swift.Float, newZoom: Swift.Float) -> Swift.Bool
+}
+public enum PolylineCodec {
+  public static func encode(_ points: [TrackerGeo.GeoPoint], precision: Swift.Int = Track.defaultPrecision) -> Swift.String
+  public static func decode(_ encoded: Swift.String, precision: Swift.Int = Track.defaultPrecision) -> [TrackerGeo.GeoPoint]
+  final public class Encoder {
+    public init(precision: Swift.Int = Track.defaultPrecision)
+    final public func add(_ point: TrackerGeo.GeoPoint)
+    final public func snapshot() -> Swift.String
+    @objc deinit
+  }
+  final public class Decoder {
+    public init(precision: Swift.Int = Track.defaultPrecision)
+    final public func drain(_ encoded: Swift.String) -> [TrackerGeo.GeoPoint]
+    @objc deinit
+  }
+}
+public enum PuckAnimation {
+  public static func target(puck: TrackerGeo.PuckState, lookaheadMs: Swift.Int64) -> TrackerGeo.GeoPoint
+  #if compiler(>=5.3) && $NonescapableTypes
+  public static func smoothedHeading(previousDeg: Swift.Double?, puck: TrackerGeo.PuckState) -> Swift.Double?
+  #endif
+  public static var bearingEmaAlpha: Swift.Double {
+    get
+  }
+  public static var bearingFreezeBelowMps: Swift.Float {
+    get
+  }
+}
+public struct SnapFix : Swift.Sendable {
+  public let point: TrackerGeo.GeoPoint
+  public let timeMs: Swift.Int64
+  public let accuracyM: Swift.Float
+  public init(point: TrackerGeo.GeoPoint, timeMs: Swift.Int64, accuracyM: Swift.Float)
+}
+public struct SnapRequest : Swift.Sendable {
+  public let fixes: [TrackerGeo.SnapFix]
+  public init(fixes: [TrackerGeo.SnapFix])
+  public var path: [TrackerGeo.GeoPoint] {
+    get
+  }
+  public var hasTimestamps: Swift.Bool {
+    get
+  }
+}
+public protocol RoadSnapProvider : Swift.Sendable {
+  func snap(path: [TrackerGeo.GeoPoint]) async throws -> [TrackerGeo.GeoPoint]
+  func snap(request: TrackerGeo.SnapRequest) async throws -> [TrackerGeo.GeoPoint]
+}
+extension TrackerGeo.RoadSnapProvider {
+  public func snap(request: TrackerGeo.SnapRequest) async throws -> [TrackerGeo.GeoPoint]
+}
+extension TrackerGeo.MovementStatus : Swift.Equatable {}
+extension TrackerGeo.MovementStatus : Swift.Hashable {}
+extension TrackerGeo.MovementStatus : Swift.RawRepresentable {}
+extension TrackerGeo.ActivityType : Swift.Equatable {}
+extension TrackerGeo.ActivityType : Swift.Hashable {}
+extension TrackerGeo.ActivityType : Swift.RawRepresentable {}
+extension TrackerGeo.MotionState : Swift.Equatable {}
+extension TrackerGeo.MotionState : Swift.Hashable {}
+extension TrackerGeo.MotionState : Swift.RawRepresentable {}
+extension TrackerGeo.MockPolicy : Swift.Equatable {}
+extension TrackerGeo.MockPolicy : Swift.Hashable {}
+extension TrackerGeo.MockPolicy : Swift.RawRepresentable {}
+extension TrackerGeo.SegmentType : Swift.Hashable {}
+extension TrackerGeo.SegmentType : Swift.RawRepresentable {}
+extension TrackerGeo.Smoothing : Swift.Hashable {}

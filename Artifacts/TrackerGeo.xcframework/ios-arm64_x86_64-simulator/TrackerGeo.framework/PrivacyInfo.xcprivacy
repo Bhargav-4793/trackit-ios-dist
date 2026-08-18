@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- TrackerGeo collects nothing and reaches no platform API. It ships a
+         manifest declaring exactly that, because an empty declaration is a
+         statement and its absence is a question a reviewer has to ask you.
+
+         The engine imports Foundation only — enforced by ArchitectureTests — so
+         there is no required-reason API to declare. The CLOCK_MONOTONIC
+         references in Port/Ports.swift and Filter/ClockGuard.swift are prose
+         describing what a host's Clock conformance must do; the call itself
+         lives in TrackerCore. -->
+    <key>NSPrivacyTracking</key><false/>
+    <key>NSPrivacyTrackingDomains</key><array/>
+    <key>NSPrivacyCollectedDataTypes</key><array/>
+    <key>NSPrivacyAccessedAPITypes</key><array/>
+</dict>
+</plist>
