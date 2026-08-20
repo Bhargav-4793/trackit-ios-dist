@@ -162,6 +162,59 @@ the Low Power Mode switch. A user at 80 % who enabled it by hand is not low, so
 Emitted on transition only and deduped, because iOS posts a notification per 1 %
 step.
 
+### Tracking gaps are named, not drawn over
+
+iOS never relaunches a force-quit app for location events. A user who swipes the
+app away and then drives leaves a hole in the track, and until now the map joined
+the two ends with a straight line that read as a driven route — on the capture
+that motivated this, a 1.5 km line across a city the device was never observed on,
+with a stop pin invented at its midpoint 750 m from anywhere real.
+
+The hole is now a fact the SDK reports:
+
+```swift
+case .trackingGap(let durationSec, let distanceMeters):
+    banner("Tracking was off for \(durationSec / 60) min. "
+         + "Please don't swipe the app away.")
+```
+
+Emitted once, on the first stored point after the silence, when capture was quiet
+for **≥ 10 minutes** and resumed **≥ 250 m away**. Both are required, which is
+what keeps an ordinary parked night out of it — twelve hours of stillness is
+drift suppression working, and on the motivating log that night measured 25 m.
+
+`SegmentType` gained `.gap` alongside `.travel` and `.stop`. `TrackMapView` draws
+a gap dashed and grey and splits the solid route around it; a `.gap` carries no
+speed band, no activity, no arrows and no stop node, and adds nothing to
+`TrackStats.totalDistanceMeters`, which sums what was observed.
+
+`TrackPoint.odometerM` makes the opposite choice deliberately: it credits the
+straight-line leg, because distance travelled is still distance travelled. The
+two numbers answer different questions and forcing them to agree would falsify
+one of them.
+
+Both `TrackerEvent` and `SegmentType` are non-frozen, so a `switch` over either
+needs `@unknown default` — which yours already has.
+
+### The raw-fix buffer holds three days, not seven hours
+
+`persistence.rawFixRingCapacity` went from 5 000 to **50 000**. The old ceiling
+was about seven hours of delivery, and CoreLocation keeps delivering while the
+device is stationary — so one parked night evicted every earlier trip, and a
+diagnostic read of a multi-day session came back holding only the last one. Layer
+1 is off by default and costs a few MB at the new ceiling.
+
+### The revocation check is live
+
+The licence server is configured and answering: the endpoint, the Ed25519
+response key, the `key_id` binding and the canonical form the signature covers
+have all been verified against the deployment with the SDK's own crypto path.
+Builds before this one carried a placeholder host, so the check described above
+skipped itself and never dialled.
+
+Nothing about the offline gate changed — `ready()` still starts without the
+network, and every inconclusive outcome still leaves the tracker running.
+
 ### Versioning
 
 This release restarts at `1.0.0` under the new name. The `1.0.0` and `1.0.1`

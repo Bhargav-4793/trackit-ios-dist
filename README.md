@@ -176,6 +176,9 @@ func observe() async {
         case .licenseDeactivated(let status, let reason):
             // Tracking has ALREADY stopped. Show your message here.
             print("licence \(status): \(reason ?? "no reason given")")
+        case .trackingGap(let durationSec, let distanceMeters):
+            // Capture was off while the device moved — usually a force-quit.
+            print("tracking gap: \(durationSec)s, moved at least \(Int(distanceMeters))m")
         case .error(let code, let message):
             print("error \(code.rawValue): \(message)")
         @unknown default:
@@ -467,6 +470,49 @@ struct TrackScreen: View {
 }
 ```
 
+### When tracking was off — capture gaps
+
+iOS never relaunches a force-quit app for location events. If the user swipes
+your app away and then drives, capture resumes only when they next open it, and
+the track has a hole in it that no filter change can fill.
+
+The SDK names the hole rather than papering over it:
+
+```swift
+case .trackingGap(let durationSec, let distanceMeters):
+    banner("Tracking was off for \(durationSec / 60) min. "
+         + "Please don't swipe the app away.")
+```
+
+Emitted once, on the first stored point after the silence, when capture was
+quiet for **at least 10 minutes** and resumed **at least 250 m away**. Both
+conditions are required, and that is what keeps an ordinary parked night out of
+it: sitting still for twelve hours is drift suppression working, not an outage.
+
+The same span appears on the built track as a third segment type:
+
+```swift
+for segment in track.segments where segment.type == .gap {
+    // durationSec: how long nothing was captured
+    // distanceMeters: the straight line between the last point before
+    //                 and the first point after — a LOWER BOUND
+}
+```
+
+`TrackMapView` draws it dashed and grey, and splits the solid route line around
+it, because a span nobody observed must not read as a driven route. A `.gap`
+carries no speed band, no activity, no arrows and no stop node, and it
+contributes nothing to `TrackStats.totalDistanceMeters` — that number sums what
+was observed.
+
+**The odometer makes the opposite choice on purpose.** `TrackPoint.odometerM`
+credits the straight-line leg across a gap, because distance travelled is still
+distance travelled. The two numbers answer different questions — "how far has
+this device gone" versus "how far did we watch it go" — and forcing them to
+agree would falsify one of them.
+
+`SegmentType` is not frozen, so a `switch` over it needs `@unknown default`.
+
 ### Following a run as it happens
 
 ```swift
@@ -712,6 +758,12 @@ let judged = try await Tracker.shared.getRawPoints(sessionID: id)
 // on each row. Populated when persistence.persistDecisions is on.
 let decisions = try await Tracker.shared.getDecisions(sessionID: id, limit: 200)
 ```
+
+Layer 1 is a ring buffer — `persistence.rawFixRingCapacity`, 50 000 fixes by
+default, roughly three days. It is sized so that one parked night cannot evict
+the day's driving: CoreLocation keeps delivering while stationary, so a stop
+costs rows at the same rate as a drive.
+
 
 And one write: `offerFix(_:)` feeds a fix from a source the SDK does not own
 (an external GPS, a replay). It is judged by the same pipeline as every other

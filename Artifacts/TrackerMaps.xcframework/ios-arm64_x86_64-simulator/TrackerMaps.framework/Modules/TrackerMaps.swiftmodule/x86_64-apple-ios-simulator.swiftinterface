@@ -36,6 +36,9 @@ import os
 extension TrackerGeo.Bounds {
   public func mapRect(minimumSpanMeters: _LocationEssentials.CLLocationDistance = 200) -> MapKit.MKMapRect
 }
+public enum TrackGeometry {
+  public static func observedRuns(basePath: [_LocationEssentials.CLLocationCoordinate2D], gaps: [[_LocationEssentials.CLLocationCoordinate2D]]) -> [[_LocationEssentials.CLLocationCoordinate2D]]
+}
 public enum CameraZoom {
   #if compiler(>=5.3) && $NonescapableTypes
   public static func level(longitudeSpanDeg: Swift.Double, viewportWidthPoints: Swift.Double) -> Swift.Float?
@@ -44,6 +47,9 @@ public enum CameraZoom {
 public struct RenderOptions : Swift.Sendable {
   public var basePathColor: SwiftUICore.Color
   public var basePathWidth: CoreFoundation.CGFloat
+  public var gapColor: SwiftUICore.Color
+  public var gapLineWidth: CoreFoundation.CGFloat
+  public var gapDashLengths: [CoreFoundation.CGFloat]
   public var speedOverlayWidth: CoreFoundation.CGFloat
   public var speedOverlayOpacity: Swift.Double
   public var speedBandGreen: SwiftUICore.Color

@@ -271,7 +271,7 @@ public struct TrackSegment : Swift.Sendable, Swift.Codable {
   public init(from decoder: any Swift.Decoder) throws
 }
 public enum SegmentType : Swift.String, Swift.Sendable, Swift.Codable, Swift.Equatable {
-  case travel, stop
+  case travel, stop, gap
   #if compiler(>=5.3) && $NonescapableTypes
   public init?(rawValue: Swift.String)
   #endif

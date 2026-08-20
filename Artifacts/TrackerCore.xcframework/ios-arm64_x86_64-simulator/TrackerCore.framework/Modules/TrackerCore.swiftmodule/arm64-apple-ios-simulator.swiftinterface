@@ -141,6 +141,7 @@ public enum TrackerEvent : Swift.Sendable {
   case sessionInterrupted(TrackerCore.TrackSession)
   case diagnostic(Swift.String)
   case licenseDeactivated(status: Swift.String, reason: Swift.String?)
+  case trackingGap(durationSec: Swift.Int64, distanceMeters: Swift.Double)
   case error(TrackerCore.ErrorCode, Swift.String)
 }
 public enum ErrorCode : Swift.String, Swift.Sendable {
