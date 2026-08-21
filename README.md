@@ -390,9 +390,25 @@ func centreOnUser() async {
 ```
 
 It runs on a second `CLLocationManager`, so calling it during a session cannot
-disturb the live stream. The fix is returned and nothing else — pass
-`feedIngestor: true` only if you also want it judged by the pipeline and stored
-as a point on the track that is recording.
+disturb the live stream.
+
+### `feedIngestor` is optional, and defaults to `false`
+
+The parameter picks between the call's two jobs. The capture is identical either
+way — one `requestLocation()` — and only what happens afterwards differs:
+
+| Call | What happens |
+|---|---|
+| `getCurrentLocation()` | The fix comes back and nothing else is touched. Works with no session open. **This is the default** |
+| `getCurrentLocation(feedIngestor: true)` | The fix is *also* handed to the one ingest consumer: judged by the same seven gates as a streamed fix, then stored as a point on the session that is recording |
+
+Leave it off unless you mean "add a point to the track right now". A map screen
+that passes `true` inserts a point into the user's track every time it opens,
+and the flag only makes sense while a session is open — with none there is no
+track for the point to land on.
+
+Neither setting bypasses anything: a fed fix is judged by the same pipeline, so
+a one-shot cannot inject an unvalidated point.
 
 Three consecutive failures open a circuit and further calls fail immediately,
 until location authorization is granted, location services come back, or a
