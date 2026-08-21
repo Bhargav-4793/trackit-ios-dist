@@ -162,6 +162,8 @@ public enum ErrorCode : Swift.String, Swift.Sendable {
   case licenseMissing
   case licenseInvalid
   case licenseBundleMismatch
+  case licenseRevoked
+  case licenseExpired
   #if compiler(>=5.3) && $NonescapableTypes
   public init?(rawValue: Swift.String)
   #endif

@@ -875,7 +875,7 @@ Send us the bundle identifier of the app that will ship (for example
 token back:
 
 ```
-TRACKER-eyJ…
+TRACKIT-eyJ…
 ```
 
 ### Installing it
@@ -887,7 +887,7 @@ add a row with key `TrackerLicense`, and paste the whole token as its value:
 
 ```xml
 <key>TrackerLicense</key>
-<string>TRACKER-eyJ…</string>
+<string>TRACKIT-eyJ…</string>
 ```
 
 Your `ready()` call then stays exactly as it is — no code change:
@@ -908,7 +908,7 @@ await Tracker.shared.ready(
 ```swift
 await Tracker.shared.ready(
     TrackerConfig.builder()
-        .license("TRACKER-eyJ…")
+        .license("TRACKIT-eyJ…")
         .buildUnchecked()
 )
 ```
@@ -928,7 +928,7 @@ different token per configuration — put it in a Configuration Settings File:
 
 1. **File ▸ New ▸ File… ▸ Configuration Settings File**, name it
    `Config.xcconfig`.
-2. In it, one line: `TRACKER_LICENSE = TRACKER-eyJ…`
+2. In it, one line: `TRACKER_LICENSE = TRACKIT-eyJ…`
 3. Select the project (blue icon) ▸ **Info** tab ▸ **Configurations** →
    expand Debug and Release → set your app target's configuration file to
    `Config`.
@@ -943,10 +943,23 @@ different token per configuration — put it in a Configuration Settings File:
 |---|---|---|
 | `licenseMissing` | No token found | Purchase a licence for this app |
 | `licenseInvalid` | Token malformed or altered | Re-copy the token from the issue email; the message says what failed |
-| `licenseBundleMismatch` | Genuine token, different app | The message names both bundle identifiers — check which target you built |
+| `licenseBundleMismatch` | The licence is not valid for this app | Check which target you built, or request a licence for its bundle identifier |
 
 A refused `ready()` never crashes: it returns the code and message in
 `TrackerResult`, and your app decides what to show.
+
+Two further codes arrive **later**, as `.error` events rather than from
+`ready()`, because they come from the licence server rather than the offline
+gate. Tracking has already stopped by the time either lands:
+
+| Code | Meaning | What to do |
+|---|---|---|
+| `licenseRevoked` | Withdrawn by the vendor | Contact support |
+| `licenseExpired` | A trial passed its end date | Buy a plan — the same token resumes |
+
+Both also arrive as `licenseDeactivated(status:reason:)`, which carries the
+admin's note. Once either fires, `start()` is refused until the server reports
+the licence active again.
 
 ---
 

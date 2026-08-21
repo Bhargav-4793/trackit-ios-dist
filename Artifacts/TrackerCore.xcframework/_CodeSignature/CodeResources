@@ -14,7 +14,7 @@
 		</data>
 		<key>ios-arm64/TrackerCore.framework/Modules/TrackerCore.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<data>
-		kxUdHBtFEw7PAdpCMEkH5wGjh1g=
+		c+ZKEa3i5JN3SVpg9HYrEC4na60=
 		</data>
 		<key>ios-arm64/TrackerCore.framework/Modules/module.modulemap</key>
 		<data>
@@ -26,7 +26,7 @@
 		</data>
 		<key>ios-arm64/TrackerCore.framework/TrackerCore</key>
 		<data>
-		kOKabYAoq+OAyA2ZpJXeolSPGSE=
+		8JZ0B8aztzdCjBK/kzJuYe1415s=
 		</data>
 		<key>ios-arm64_x86_64-simulator/TrackerCore.framework/Headers/TrackerCore-Swift.h</key>
 		<data>
@@ -38,11 +38,11 @@
 		</data>
 		<key>ios-arm64_x86_64-simulator/TrackerCore.framework/Modules/TrackerCore.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		ukidV7IMgfjo3EmnQ3hTwAHPbTM=
+		WE0WmXCRyk/RiV03/t7BighToCE=
 		</data>
 		<key>ios-arm64_x86_64-simulator/TrackerCore.framework/Modules/TrackerCore.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		925cPeoIWlxJCQjRx3YMFn4T9Xw=
+		eX0RyCJv3elfmwLJPF0grTSgtx4=
 		</data>
 		<key>ios-arm64_x86_64-simulator/TrackerCore.framework/Modules/module.modulemap</key>
 		<data>
@@ -54,11 +54,11 @@
 		</data>
 		<key>ios-arm64_x86_64-simulator/TrackerCore.framework/TrackerCore</key>
 		<data>
-		tkmKOuD1EBOfBQvlCyV7twP26lI=
+		ftlbY7/M6w4KlyAK+9yoMUgsEdg=
 		</data>
 		<key>ios-arm64_x86_64-simulator/TrackerCore.framework/_CodeSignature/CodeResources</key>
 		<data>
-		ELyVbv+xEs1dLSPAMMxx1ArDNHs=
+		dAZyY/R61w+A0Jm8vBaBIJ1a2B8=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -81,7 +81,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			G0X5KK2/EgU2aO3aERIunjwsO2v0wP8MlWxAYlHQ3gg=
+			oMfqmw9Ulzv8lMP2omh/AU9g1Nt6r3L71ytUfN8VewM=
 			</data>
 		</dict>
 		<key>ios-arm64/TrackerCore.framework/Modules/module.modulemap</key>
@@ -102,7 +102,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			4iEQYLpw8hcjjoqiZbLXy0lriKA6XRhSL6TQJCgTADg=
+			tID2wKrH1imj+K2KeoaaTEbSweXUHzCHTdIUblKUsYk=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/TrackerCore.framework/Headers/TrackerCore-Swift.h</key>
@@ -123,14 +123,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			lBjek4sjTCFCSxCm4BNw4W+uQDGFsYAlqiCH/5dtqgk=
+			8xj2flQ3wPYWZMuj5hjnxoSsFFnCB70vBCyBa+QPp6g=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/TrackerCore.framework/Modules/TrackerCore.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			JDG4/ymi4xmuHehdY+j36HSMc17k1KpFZ1PwGn4cdpw=
+			jszhV6R3FB0JcJ+4F577bizJ7GrMWeLl1Uff+BhEms8=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/TrackerCore.framework/Modules/module.modulemap</key>
@@ -151,14 +151,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			K12Remwcjz+TSlxh3Dc3ZOu16MSjlq606YdQn0HzWmg=
+			8Q0BEfHnACfjr8CN5E0Vrt5gOh/XnMbcCbAJbQ9ZOiE=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/TrackerCore.framework/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			KoXopCiyo7MQNpwa0hLod5xHDBZ0dWlRLN8gv8CuQm4=
+			BRNy+TDelGw9imaoJlXJ/8zdZvJEjVvpLJeeQAaXJA0=
 			</data>
 		</dict>
 	</dict>

@@ -6,6 +6,66 @@ All notable changes to the Tracker iOS SDK. Newest first.
 
 ## 1.0.0
 
+### Licensing
+
+Licences are now issued by the licence server, and the SDK's relationship to
+them changed accordingly.
+
+- **Tokens carry the `TRACKIT-` prefix.** The prefix sits outside the signed
+  bytes, so licences already issued remain valid. `key_id` hashes the whole
+  string, so it changes with the prefix.
+- **Server-issued licences are accepted without a pinned public key.** When the
+  SDK holds no key for a token's `kid` it checks the payload and the bundle
+  rule, then defers to the server for validity. This is a deliberate
+  weakening, recorded rather than hidden: an offline device can no longer tell
+  a forged token from a genuine one. Tokens whose `kid` the SDK does hold are
+  still verified in full, and pinning the issuer's public key restores full
+  enforcement with no other change.
+- **Key ids are split by issuer.** `kid 1` is the licence server; `kid 2` is
+  the local development key. Both previously signed as `kid 1` with different
+  keys, so every cross-issuer token failed as though it had been tampered
+  with.
+- **A withdrawn licence refuses to start.** Ending the session was not enough
+  — a host could call `start()` again and carry on, which made the whole
+  revocation path decorative. The block lifts when the server reports `active`
+  again.
+- **`revoked`, `expired` and `package_mismatch` stop tracking**, each arriving
+  as an `ErrorCode` as well as `licenseDeactivated`. Two new codes:
+  `licenseRevoked` and `licenseExpired`.
+
+  > `package_mismatch` also stops tracking. On the current deployment an
+  > *unregistered* licence receives that same status, so a missing ledger row
+  > will stop a paying customer. Register every licence you issue.
+
+- **The `/verify` response-signing key is compiled in, not fetched.** Asking
+  the server for the key that proves its own answer let anyone owning the
+  connection supply both halves.
+- **Revocation is re-checked every six hours during a session**, not only at
+  launch. Nothing is cached: the interval limits how often the server is
+  asked, and never extends how long an old verdict is trusted.
+- **`start()` reports why `ready()` refused** instead of "call `ready()`
+  first".
+- **A bundle mismatch no longer names the licensed bundle identifier.** It
+  belongs to another customer, and the message reaches end users and support
+  tickets.
+- **The licence exchange logs at `notice`** — request, raw response, verdict.
+
+### Battery
+
+- **The first reading after enabling battery monitoring is re-read as it
+  settles.** iOS returns a coarse or stale level for the first few hundred
+  milliseconds, and because readings publish only on a transition, a wrong
+  first value was the answer every host saw until the battery moved a whole
+  percent. On a parked or fully charged phone that could be hours.
+- The raw float is logged beside the derived percentage.
+
+### Compatibility
+
+No API was removed. `licenseRevoked` and `licenseExpired` are additive; hosts
+switching exhaustively over `ErrorCode` will need to handle them.
+
+### The SDK is now Tracker
+
 **The SDK is now Tracker.** Every module, type and identifier that carried the
 old name has moved. Nothing about the engine changed — the acceptance pipeline,
 the Kalman filter, the motion machine and the plotting plane are the same code
