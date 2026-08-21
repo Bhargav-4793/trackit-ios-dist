@@ -393,20 +393,20 @@ func centreOnUser() async {
 It runs on a second `CLLocationManager`, so calling it during a session cannot
 disturb the live stream.
 
-### `feedIngestor` is optional, and defaults to `false`
+### `feedIngestor` is optional, and defaults to `true`
 
 The parameter picks between the call's two jobs. The capture is identical either
 way — one `requestLocation()` — and only what happens afterwards differs:
 
 | Call | What happens |
 |---|---|
-| `getCurrentLocation()` | The fix comes back and nothing else is touched. Works with no session open. **This is the default** |
-| `getCurrentLocation(feedIngestor: true)` | The fix is *also* handed to the one ingest consumer: judged by the same seven gates as a streamed fix, then stored as a point on the session that is recording |
+| `getCurrentLocation()` | The fix comes back **and** is handed to the one ingest consumer: judged by the same seven gates as a streamed fix, then stored as a point on the session that is recording. **This is the default** |
+| `getCurrentLocation(feedIngestor: false)` | The fix comes back and nothing else is touched |
 
-Leave it off unless you mean "add a point to the track right now". A map screen
-that passes `true` inserts a point into the user's track every time it opens,
-and the flag only makes sense while a session is open — with none there is no
-track for the point to land on.
+Pass `false` when you only want to read the position — a map centre or an
+address lookup — because with the default a screen that asks "where am I" adds a
+point to the user's track every time it opens. With no session open there is no
+track for the point to land on, so the flag makes no difference there.
 
 Neither setting bypasses anything: a fed fix is judged by the same pipeline, so
 a one-shot cannot inject an unvalidated point.
@@ -501,6 +501,25 @@ let fences = await Tracker.shared.getGeofences()          // read back from the 
 await Tracker.shared.removeGeofence(id: "depot-7")        // false if not found
 await Tracker.shared.removeAllGeofences()                 // returns how many
 ```
+
+Every arm and disarm also reaches `events()`, for a screen that watches the set
+rather than the call:
+
+```swift
+case .geofenceAdded(let fence):
+    // The fence as it exists — the radius is the clamped one. Emitted after
+    // CoreLocation acknowledges the region, so getGeofences() already sees it.
+    print("armed \(fence.id) at \(fence.radiusM) m")
+
+case .geofenceRemoved(let id):
+    print("disarmed \(id)")
+```
+
+Re-arming an identifier that already exists emits `geofenceAdded` again — the
+replacement is a new fence under the same name, and its dwell starts from that
+moment. `removeAllGeofences()` emits one `geofenceRemoved` per fence rather than
+one for the batch, and removing an unknown id emits nothing, the same way it
+returns `false`.
 
 ### Crossings arrive two ways, and you need both
 

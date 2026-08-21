@@ -305,6 +305,14 @@ What shipped at the time carried the old ones.
 
 ### Added
 
+- **`geofenceAdded` and `geofenceRemoved` events.** The set of armed fences now
+  reports its own changes, for a host driven by `events()` rather than by the
+  return value of each call. `geofenceAdded` carries the fence **as armed** —
+  the clamped radius, not necessarily the requested one — and is emitted after
+  CoreLocation acknowledges the region, so `getGeofences()` already sees it.
+  `geofenceRemoved` is one per fence, so `removeAllGeofences()` emits several,
+  and removing an unknown identifier emits nothing, matching its `false`
+  return.
 - **Geofences.** Circular regions under your own identifier, independent of
   tracking: a fence needs `ready()` and location authorization, fires with no
   session open, keeps firing after `stop()`, and survives termination and
@@ -467,6 +475,14 @@ What shipped at the time carried the old ones.
   already been torn down.
 
 ### Changed — action required
+
+- **`getCurrentLocation(feedIngestor:)` now defaults to `true`.** The one-shot
+  fix is judged by the pipeline and stored as a point on the session that is
+  recording, where it previously came back and touched nothing. A screen that
+  only wants to read the position — a map centre, an address lookup — must now
+  pass `feedIngestor: false`, or it will add a point to the user's track every
+  time it opens. With no session open the flag makes no difference. Neither
+  setting bypasses the gates: a fed fix cannot inject an unvalidated point.
 
 - **`motion.stopTimeoutSec` is now `motion.stopTimeoutMin`**, stated in minutes.
   The old name said seconds while the value it described was a stop timeout
