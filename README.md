@@ -924,6 +924,41 @@ Six optional switches, all defaulting to the behaviour the SDK already had:
 | `sensors.useBarometer` | `false` | Reports vertical motion, so a lift is not read as standing still |
 | `sensors.activityRecognitionIntervalMs` | `0` | Throttles activity updates. Saves no battery — iOS classifies regardless; it is for hosts whose own handler is expensive |
 
+### How sure the phone has to be
+
+iOS classifies what the device is doing — walking, driving, still — and attaches
+a confidence to each reading. The SDK maps CoreMotion's three levels onto a
+0–100 scale so the bars stay readable in config: low is `33`, medium is `66`,
+high is `100`.
+
+Three fields set those bars:
+
+| Field | Default | The bar it sets |
+|---|---|---|
+| `motion.activityConfidenceMin` | `66` | The general bar for live readings. At the default a low-confidence guess is ignored and medium or better is accepted |
+| `motion.snapshotConfidenceMin` | `50` | The bar for history read back after a gap. Looser on purpose — a recovered segment beats no segment |
+| `motion.stillConfidenceMin` | `100` | Applies to `.still` only, and *after* the general bar. At the default only a high-confidence still may start a stop |
+
+`stillConfidenceMin` sits at the top of the scale for a reason. CoreMotion
+reports `.still` at low and medium confidence throughout ordinary movement — the
+moment between strides, a gear change, a red light — often once a second. Each
+one is a true reading of a device that was, for that instant, not moving; none
+of them means the journey ended. At `100` they are ignored, and the host stops
+seeing `moving → stopPending → moving` flap at walking cadence with an event per
+flap. Lower it to `66` to let medium-confidence stills through.
+
+None of these can break tracking. An activity label may only *accelerate* a
+transition the accepted fixes already justify — it can never veto one — so a real
+stop still arrives through the fix path and `stopTimeoutMin` whatever these are
+set to. Raising a bar costs you speed, not correctness.
+
+`ready()` returns `invalidConfig` if `stillConfidenceMin` is below
+`activityConfidenceMin`: a still that cannot clear the general bar never reaches
+the second one, so the setting would otherwise be silently ignored.
+
+Setting `motion.activityRecognition = false` turns the whole input off. Capture
+is unaffected — you lose the acceleration, not the tracking.
+
 ---
 
 ## Diagnostics
