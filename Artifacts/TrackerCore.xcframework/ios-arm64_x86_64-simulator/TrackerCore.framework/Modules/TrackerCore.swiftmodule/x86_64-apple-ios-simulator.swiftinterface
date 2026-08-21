@@ -136,6 +136,8 @@ public enum TrackerEvent : Swift.Sendable {
   case geofenceEnter(TrackerCore.GeofenceEvent)
   case geofenceExit(TrackerCore.GeofenceEvent)
   case geofenceDwell(TrackerCore.GeofenceEvent)
+  case geofenceAdded(TrackerCore.Geofence)
+  case geofenceRemoved(id: Swift.String)
   case powerSaveChange(Swift.Bool)
   case batteryChange(TrackerCore.BatteryInfo)
   case sessionInterrupted(TrackerCore.TrackSession)
@@ -373,7 +375,7 @@ public enum TrackerResult<Success> : Swift.Sendable where Success : Swift.Sendab
   #if compiler(>=5.3) && $NonescapableTypes
   final public func currentSession() async throws -> TrackerCore.TrackSession?
   #endif
-  final public func getCurrentLocation(feedIngestor: Swift.Bool = false) async -> TrackerCore.TrackerResult<TrackerGeo.TrackFix>
+  final public func getCurrentLocation(feedIngestor: Swift.Bool = true) async -> TrackerCore.TrackerResult<TrackerGeo.TrackFix>
   @discardableResult
   final public func changePace(isMoving: Swift.Bool) async -> TrackerCore.TrackerResult<Swift.Void>
   final public func addGeofence(_ fence: TrackerCore.Geofence) async -> TrackerCore.TrackerResult<TrackerCore.Geofence>
