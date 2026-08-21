@@ -145,6 +145,116 @@ an outcome you cannot read is not evidence that something succeeded.
 
 ---
 
+## Permissions
+
+**The SDK shows no UI.** `Tracker.shared.permissions()` hands back a
+`PermissionManager` that raises the system prompts and answers questions about
+them; the rationale screen, the copy and the Settings fallback stay in your app.
+A location prompt is product copy — a library that presents its own alert cannot
+be localised by you, cannot be A/B tested, and appears at whatever moment the SDK
+happened to be initialised.
+
+What follows is the whole surface. A host with its own UI layer — an onboarding
+flow, a settings screen, a cross-platform bridge — needs to reach exactly these
+members and nothing more.
+
+### Requesting
+
+| Method | Returns | |
+|---|---|---|
+| `requestWhenInUse()` | `AuthorizationTier` | Rung 1. Ask this first, always |
+| `requestAlways()` | `BackgroundRequest` | Rung 3. Reachable only *from* When-In-Use, and iOS raises it at most once |
+| `requestMotion()` | `MotionAuthorization` | Optional, and last. Denial is not fatal |
+| `requestTemporaryFullAccuracy(purposeKey:)` | `LocationAccuracy` | Precise Location for this session only, without changing the user's global setting |
+
+All four are `async` and `@MainActor`. Each **returns immediately with the
+current answer** when iOS would not prompt, rather than suspending on a callback
+that is never coming.
+
+`requestMotion()` has no request API behind it — CoreMotion raises consent on
+first use — so it asks the activity history for an empty window. The alert comes
+from the call, not the range, so the window costs nothing.
+
+`purposeKey` must exist in your `NSLocationTemporaryUsageDescriptionDictionary`.
+When it does not, iOS resolves the request with an error and the accuracy is
+unchanged, which is why the answer is re-read from CoreLocation rather than
+inferred from the absence of an error.
+
+### Reading
+
+| Member | Returns | |
+|---|---|---|
+| `tier()` | `AuthorizationTier` | `.none` / `.whenInUse` / `.always`. `.denied` and `.restricted` both read as `.none` |
+| `accuracy()` | `LocationAccuracy` | `.full` / `.reduced` |
+| `motionAuthorization()` | `MotionAuthorization` | `.notDetermined` / `.denied` / `.restricted` / `.authorized` |
+| `shouldStopAsking(attempts:)` | `Bool` | Whether your UI should offer Settings instead of another prompt. You own the counter, because you own the prompts |
+| `settingsURL` | `URL` | Where to send a user whose answer only Settings can change. **The SDK never opens it itself** |
+
+**Re-read all three states on every foreground.** Each moves underneath a running
+app: the user can revoke location in Settings, downgrade a provisional Always
+days after granting it, or switch Precise Location off without touching the tier.
+
+### The order is load-bearing
+
+1. `requestWhenInUse()`
+2. **your own rationale**, in your words, on your screen
+3. `requestAlways()`
+4. `requestMotion()`
+
+iOS raises the Always prompt **at most once**, and only *from* When-In-Use.
+Asking for it from `.notDetermined` — or asking for both in the same breath —
+loses background tracking for that install permanently, with no recovery except
+convincing the user to visit Settings.
+
+Rung 3 without rung 2 is the same loss by a slower route: a user who has not been
+told what the prompt is for taps "Keep Only While Using", and there is no second
+prompt. Motion goes last so its alert does not stack on top of a location alert.
+
+### `requestAlways()` answers five ways, not two
+
+| Case | What it means |
+|---|---|
+| `alreadyGranted` | Already on Always — including the provisional grant iOS makes with no prompt at all. **The absence of a prompt is not a denial** |
+| `granted` | The user chose "Change to Always" |
+| `denied` | Location is denied or restricted outright |
+| `needsWhenInUseFirst` | The SDK refused to ask, because the app is not on When-In-Use. Climb rung 1 and try again — nothing is lost |
+| `needsSettings(URL)` | iOS will not raise the prompt again. Show your explanation, then offer the URL |
+
+Flattening this to a `Bool` throws away the two cases that decide what your UI
+does next. Anything that carries the answer across a boundary — a view model, a
+bridge to another language — should carry the case and the URL, not a yes/no.
+
+### Precise Location is not a rung
+
+The user sets it independently of the tier, so it gates nothing and nothing gates
+it: Always can be granted with Precise Location off. It matters anyway — a 1–3 km
+error circle defeats every gate in the acceptance pipeline, so `start()` refuses
+`.continuous` and `.adaptive` under `.reduced` instead of recording a track
+nobody can trust. Read it with `accuracy()`, then either send the user to
+`settingsURL` or ask for `requestTemporaryFullAccuracy(purposeKey:)`.
+
+### Ask through the SDK, not around it
+
+iOS silently no-ops a second Always request: the status never changes, so the
+delegate callback never arrives. `PermissionManager` records that it asked —
+across launches, before the prompt goes up rather than after — and turns the
+second call into `needsSettings` instead of awaiting an answer iOS has no
+intention of sending.
+
+A third-party permissions library asking for Always behind the SDK's back leaves
+that record unset, and the next `requestAlways()` waits on a prompt that will
+never appear. Route the location rungs through `permissions()` and this cannot
+happen.
+
+### A worked ladder
+
+`Examples/SampleApp/Modules/Home/PermissionLadderView.swift` is the whole thing in one
+file: four rungs, each disabled until its predecessor is satisfied, and every
+disabled control saying *why* it is disabled. It depends on nothing but
+`Tracker.shared.permissions()`. Copy it.
+
+---
+
 ## Observing what happens
 
 `events()` is the live stream. Handling every case is the point: a handler that
@@ -786,7 +896,7 @@ Everything on the `Tracker.shared` facade, in one place:
 | `stop()` | Close the session and stop capturing |
 | `state` | `@Observable` snapshot for SwiftUI: `isReady`, `isTracking`, `motionState`, `providerState`, `currentSessionID` |
 | `events()` | Every SDK event, as an `AsyncStream` |
-| `permissions()` | The authorization ladder: `requestWhenInUse()`, `requestAlways()` |
+| `permissions()` | The authorization ladder: `requestWhenInUse()`, `requestAlways()`, `requestMotion()`, `requestTemporaryFullAccuracy(purposeKey:)`, plus `tier()`, `accuracy()`, `motionAuthorization()`, `shouldStopAsking(attempts:)`, `settingsURL`. See [Permissions](#permissions) |
 | `authorizationTier()` | Current rung, on demand |
 | `providerState()` / `currentProviderState()` | Authorization + power snapshot, as stream / on demand |
 | `getSensors()` | What hardware and permissions make possible right now |
