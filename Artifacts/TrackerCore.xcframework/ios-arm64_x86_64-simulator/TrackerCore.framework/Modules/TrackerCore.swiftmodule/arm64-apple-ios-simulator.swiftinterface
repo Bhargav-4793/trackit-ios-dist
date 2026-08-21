@@ -152,6 +152,9 @@ public enum ErrorCode : Swift.String, Swift.Sendable {
   case locationDisabled
   case fgsStartRefused
   case fixTimeout
+  case oneShotBusy
+  case oneShotCircuitOpen
+  case fixRejected
   case storageFull
   case storageReset
   case trackerDead

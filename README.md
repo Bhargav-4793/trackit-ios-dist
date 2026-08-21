@@ -378,10 +378,11 @@ func centreOnUser() async {
     switch await Tracker.shared.getCurrentLocation() {
     case .success(let fix):
         print("\(fix.latitude), \(fix.longitude) ±\(fix.accuracyM) m")
-    case .failure(_, let message):
-        // The message names the cause: authorization, location services,
-        // reduced accuracy, low-power mode, or a capture already running.
-        print(message)
+    case .failure(let code, let message):
+        // The code says which of the four causes it was; the message carries
+        // the specifics — authorization, location services, reduced accuracy,
+        // low-power mode.
+        print("\(code.rawValue): \(message)")
     // Required: TrackerResult is non-frozen across the binary boundary.
     @unknown default:
         print("unrecognised result")
@@ -410,9 +411,21 @@ track for the point to land on.
 Neither setting bypasses anything: a fed fix is judged by the same pipeline, so
 a one-shot cannot inject an unvalidated point.
 
-Three consecutive failures open a circuit and further calls fail immediately,
-until location authorization is granted, location services come back, or a
-session starts.
+### Failures name their own cause
+
+Only one of the four is worth retrying, so each carries its own code:
+
+| Code | Cause | What to do |
+|---|---|---|
+| `notReady` | `ready()` was not called | Call it, from the `App` initialiser |
+| `fixTimeout` | No fix inside `oneShotTimeoutMs` | Retry is reasonable. The message carries the device state: authorization, location services, accuracy grant, low-power mode |
+| `oneShotBusy` | A capture is already in flight | **Do not retry.** Await the one running; a second call collides again |
+| `oneShotCircuitOpen` | Three consecutive failures opened the circuit | **Do not retry.** Further calls fail immediately, until location authorization is granted, location services come back, or a session starts |
+| `fixRejected` | A fix arrived and was refused at the mapping boundary — mock-location policy or the staleness ceiling | Read the message. It is the only account there is: this refusal happens before the pipeline, so no decision row is written |
+
+The circuit exists to stop burning wake-ups on a device that cannot produce a
+fix. Treating any of the last three as "retry later" is what it is there to
+prevent.
 
 ---
 

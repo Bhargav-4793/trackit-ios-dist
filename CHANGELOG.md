@@ -433,6 +433,16 @@ What shipped at the time carried the old ones.
 
 ### Fixed
 
+- **`getCurrentLocation()` reported every failure as a timeout.** All four
+  causes — the timeout itself, a capture already in flight, the circuit opened
+  by three consecutive failures, and a fix refused at the mapping boundary —
+  arrived as `ErrorCode.fixTimeout`, so the only way to tell them apart was to
+  parse the message. The name reads "transient, retry later" and three of the
+  four are nothing of the kind: retrying a busy capture collides with the one
+  in flight, and retrying into an open circuit fails instantly until
+  authorization, location services or a session start closes it. Three codes
+  join `fixTimeout`, which keeps its exact meaning: `oneShotBusy`,
+  `oneShotCircuitOpen` and `fixRejected`. Messages are unchanged.
 - **The accelerometer veto measured a single instant, not the interval.**
   `sensors.useAccelerometerVeto` sampled one accelerometer reading per fix and
   treated it as a mean over the time since the last stored point. A carried
