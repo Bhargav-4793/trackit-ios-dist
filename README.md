@@ -400,6 +400,34 @@ session starts.
 
 ---
 
+## Manual pace override
+
+`changePace(isMoving:)` forces the motion machine into moving or stationary,
+overriding what the sensors think. It is the escape hatch for the case
+autonomous detection cannot win: indoors, in a car park, in a lift lobby,
+CoreMotion can sit on `.still` while the user is demonstrably about to drive
+away — and your app often knows better, because the user just tapped "Start
+trip", or a job was accepted, or a geofence just fired.
+
+```swift
+await Tracker.shared.start(tag: "trip")
+
+// Commit to moving now, rather than waiting for CoreMotion to agree.
+await Tracker.shared.changePace(isMoving: true)
+
+// ...and settle to stationary the way a confirmed stop does.
+await Tracker.shared.changePace(isMoving: false)
+```
+
+- **`true` bypasses `motionTriggerDelaySec`.** A host asserting motion is not a
+  hint to be corroborated.
+- **Idempotent.** Asserting a state the machine is already in is a no-op and
+  emits nothing, so it is safe to call on every tap without an event storm.
+- **Needs an open session.** Without one it returns `.failure(.notReady)`
+  rather than silently accepting something it cannot do.
+
+---
+
 ## Geofences
 
 Circular regions with your own identifier. `addGeofence` needs `ready()` and
@@ -883,6 +911,29 @@ fix — a host cannot inject an unvalidated point:
 await Tracker.shared.offerFix(fix)   // TrackFix
 ```
 
+### Recording a fixture
+
+`exportFixture(sessionID:name:)` serialises a session's layer-1 fixes as
+fixture JSON — the same format the engine's replay suite runs against. It is
+how an anomaly seen in the field becomes a regression test.
+
+```swift
+let json = try await Tracker.shared.exportFixture(
+    sessionID: id,
+    name: "roundabout-drift"
+)
+```
+
+- **It ships in release builds**, unlike the replay harness. A recorder that
+  exists only in debug cannot record the one thing worth recording — an anomaly
+  on a real device, against the build the user actually has.
+- **It returns the JSON rather than writing a file.** Where it belongs is your
+  question: attach it to a bug report, or write it to disk yourself.
+- **It requires `persistence.persistRawFixes`.** Layer 1 is the input; with the
+  flag off the fixture comes back with an empty `fixes` array.
+- The fixture's `expected` array is empty by design. Verdicts are read and
+  pasted in by hand after review — one blessed without reading locks in a bug.
+
 ---
 
 ## API reference
@@ -894,6 +945,7 @@ Everything on the `Tracker.shared` facade, in one place:
 | `ready(_:)` | Resolve config, restore state, register background tasks. Call once, from the `App` initialiser |
 | `start(tag:)` | Open a session and start capturing |
 | `stop()` | Close the session and stop capturing |
+| `changePace(isMoving:)` | Force the motion machine moving or stationary, overriding the sensors. Needs an open session |
 | `state` | `@Observable` snapshot for SwiftUI: `isReady`, `isTracking`, `motionState`, `providerState`, `currentSessionID` |
 | `events()` | Every SDK event, as an `AsyncStream` |
 | `permissions()` | The authorization ladder: `requestWhenInUse()`, `requestAlways()`, `requestMotion()`, `requestTemporaryFullAccuracy(purposeKey:)`, plus `tier()`, `accuracy()`, `motionAuthorization()`, `shouldStopAsking(attempts:)`, `settingsURL`. See [Permissions](#permissions) |
@@ -915,6 +967,7 @@ Everything on the `Tracker.shared` facade, in one place:
 | `setActiveRoute(_:)` / `isOffRoute()` | Snap the live puck to a known route / wrong-turn detection |
 | `setRoadSnapProvider(_:)` | Install `TrackerSnap`'s OSRM provider (or your own) |
 | `getRawFixes` / `getRawPoints` / `getDecisions` | The three diagnostic layers |
+| `exportFixture(sessionID:name:)` | A session's raw fixes as replayable fixture JSON. Ships in release builds |
 | `offerFix(_:)` | Feed a fix from a source the SDK does not own |
 | `pendingUploads` / `setSyncTrigger(_:)` | The two seams `TrackerSync` plugs into |
 
