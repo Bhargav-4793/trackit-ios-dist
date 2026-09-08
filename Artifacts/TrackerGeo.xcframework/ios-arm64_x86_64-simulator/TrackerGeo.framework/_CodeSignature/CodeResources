@@ -10,7 +10,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		SBzZsJcxosJcE7r9TeZvP1qejto=
+		ciC+yzWRWnZsdYmzzCKuBZ/vArk=
 		</data>
 		<key>Modules/TrackerGeo.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -34,7 +34,7 @@
 		</data>
 		<key>Modules/TrackerGeo.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		fc7s4HZ4eDhgUGvhKO/CPZXhsqg=
+		xyFQjM64voTvTyi5iwii42EL4I0=
 		</data>
 		<key>Modules/TrackerGeo.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -58,7 +58,7 @@
 		</data>
 		<key>Modules/TrackerGeo.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		IsqRemV7xN2i3wwn7W0g2zlUybc=
+		43gEZGo2UKYfmtNluBH8h8FhYNo=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -113,7 +113,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			ymHLebkHZW50tZ/hEb2BRNuHUXVPX6gR0tt/uRSNAv0=
+			lejYu8aFW8gsKjUF38dsuNRWn3jf7jg1px9gejbNDj4=
 			</data>
 		</dict>
 		<key>Modules/TrackerGeo.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
@@ -155,7 +155,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			YLNqIwUlMEubK7qZ3V/6RV6oBZcjpvycCa7NPB+QsVw=
+			iLC7PpXHebYBAdiyMB5XT0+2EvBQ/5k217V4x5dbc8c=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

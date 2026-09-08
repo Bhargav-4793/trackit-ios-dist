@@ -32,6 +32,7 @@ public struct SyncConfig : Swift.Sendable, Swift.Equatable, Swift.Codable {
 }
 @_hasMissingDesignatedInitializers final public class SyncEngine : Swift.Sendable {
   public static let shared: TrackerSync.SyncEngine
+  final public func registerBackgroundTasks()
   #if compiler(>=5.3) && $NonescapableTypes
   final public func configure(_ config: TrackerSync.SyncConfig, store: any TrackerCore.PendingUploadStore, transport: (any TrackerSync.SyncTransport)? = nil)
   #endif

@@ -10,7 +10,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		X3DgSHoYGhUretXShbgYqrFhw78=
+		kq+37hIrRcSHD7jNCcbjF0AUm68=
 		</data>
 		<key>Modules/TrackerSnap.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -34,7 +34,7 @@
 		</data>
 		<key>Modules/TrackerSnap.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		tWd9zo5BG50NcMiYyLlyYk5yLkU=
+		ivoWY3OBzMT9mIeuz1NJfs/3NcI=
 		</data>
 		<key>Modules/TrackerSnap.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -58,7 +58,7 @@
 		</data>
 		<key>Modules/TrackerSnap.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		zuaFCRb/84dS3uf3SWa38dQYAMk=
+		3ShraMxYdmxzYNdto15JmMfSGKw=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -113,7 +113,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			0ligtb1I7vqkffpZ2/rYbE5rSTb6RPCbLGhrLn7NWSA=
+			gBUP6B+A5aFc8h35GA7pjChO2WPUMhGpJLz+32hmM4A=
 			</data>
 		</dict>
 		<key>Modules/TrackerSnap.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
@@ -155,7 +155,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			k913NeOjh9JfNJUW7j68E/fRT2A0f9Sol/6WL+Yja+o=
+			Ktm8K+tvKjCPnr5ViRSOx7DrRE8s6KOy9btqE9krRO4=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

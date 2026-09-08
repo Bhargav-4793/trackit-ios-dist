@@ -169,6 +169,7 @@ public enum ErrorCode : Swift.String, Swift.Sendable {
   case geofenceLimitReached
   case geofenceRegistrationFailed
   case geofenceRemovalFailed
+  case backgroundTasksNotRegistered
   case internalError
   case licenseMissing
   case licenseInvalid
@@ -366,6 +367,7 @@ public enum TrackerResult<Success> : Swift.Sendable where Success : Swift.Sendab
 @_hasMissingDesignatedInitializers final public class Tracker : Swift.Sendable {
   public static let shared: TrackerCore.Tracker
   final public let state: TrackerCore.TrackerState
+  @_Concurrency.MainActor final public func registerBackgroundTasks()
   @discardableResult
   final public func ready(_ config: TrackerCore.TrackerConfig = TrackerConfig()) async -> TrackerCore.TrackerResult<TrackerCore.TrackerState>
   #if compiler(>=5.3) && $NonescapableTypes

@@ -4,6 +4,103 @@ All notable changes to the Tracker iOS SDK. Newest first.
 
 ---
 
+## 1.0.6
+
+Registering a background task can no longer end the app. A host that reached
+`ready()` after its launch had finished — which is what every React Native and
+other lazily-created bridge does, because the bridge module is not built until
+JavaScript first calls into it — took an Objective-C exception out of
+`BGTaskScheduler` and lost the process. Nothing in the Swift half of the SDK
+could have caught it.
+
+### Fixed
+
+- **`BGTaskScheduler.register` after launch is contained instead of fatal.** iOS
+  raises `NSInternalInconsistencyException` when a launch handler is registered
+  once the app has finished launching, and again when one identifier is
+  registered twice. An Objective-C exception is not a Swift error: `do`/`catch`
+  cannot see it, `try?` cannot absorb it, and it unwinds through Swift frames
+  into `std::terminate`. Every registration in the SDK now goes through a single
+  door that catches it in Objective-C and returns a value. The reported crash was
+  `-[BGTaskScheduler _unsafe_registerForTaskWithIdentifier:usingQueue:launchHandler:]`
+  reached from `TrackerImpl.ready`.
+
+- **The SDK stops asking `BGTaskScheduler` for anything after a refusal.**
+  Catching the exception saves the process; it does not repair the scheduler.
+  Measured on the simulator: register an identifier, register it again to force
+  the raise, then register a *different* identifier that has never been seen —
+  and the process is gone, with no assertion logged and no crash report written.
+  Whatever the raise leaves behind is global to the scheduler rather than local
+  to the task, so containing the backstop's exception on its own would only have
+  moved the crash to the sync task's registration one call later. After one
+  contained refusal the SDK declines to try again for the life of the process,
+  which costs nothing: a process refused once is refused every later time.
+
+- **The shipped frameworks carry the version on the tag.** Every `.xcframework`
+  published as 1.0.5 had a `CFBundleShortVersionString` of `1.0.4`, because the
+  marketing version was raised after the archive was cut rather than before it.
+  Crash reports and support tickets from a 1.0.5 install therefore named the
+  wrong release. The bundles in 1.0.6 read `1.0.6`.
+
+### Added
+
+- **`Tracker.shared.registerBackgroundTasks()`**, and
+  **`SyncEngine.shared.registerBackgroundTasks()`** for the upload retry task.
+  Synchronous, `@MainActor`, and safe to call from
+  `application(_:didFinishLaunchingWithOptions:)` before anything `await`s. They
+  resolve nothing, open no database and return immediately; the handler they
+  install resolves the SDK's graph only when iOS actually runs the task, minutes
+  or hours later.
+
+  This is the half of `ready()` that has to happen inside the launch window, and
+  it could not stay inside `ready()`, which is `async` by necessity — it opens
+  storage, resolves the persisted configuration and checks the licence, and every
+  `await` in it is a point at which launch can complete first. The `App`
+  initialiser pattern the previous README showed was itself racy for the same
+  reason.
+
+- **`ErrorCode.backgroundTasksNotRegistered`.** Reported when a launch handler
+  could not be installed, with a message that distinguishes the two causes: an
+  identifier missing from `BGTaskSchedulerPermittedIdentifiers`, or a
+  registration that ran after launch. Tracking itself is unaffected either way —
+  the continuous stream and the relaunch primitives carry the correctness
+  guarantee and neither goes through `BGTaskScheduler`.
+
+### Changed
+
+- **`SyncEngine.configure` no longer has to run during launch.** It registered
+  the retry task, so it did; but hosts call it when a user signs in, which is
+  always too late. Registration moved to `registerBackgroundTasks()` and
+  `configure` now only installs the endpoint, the transport and the triggers. It
+  still attempts a registration as a fallback, and that attempt reports rather
+  than raising.
+
+### Notes for upgraders
+
+Add one line to your launch path:
+
+```swift
+Tracker.shared.registerBackgroundTasks()
+SyncEngine.shared.registerBackgroundTasks()   // if you use TrackerSync
+```
+
+In a UIKit host that is the top of
+`application(_:didFinishLaunchingWithOptions:)`. In a SwiftUI host it is the
+first statement of your `App` initialiser, before the `Task` that calls
+`ready()`. In a React Native or other bridged host it belongs in the native
+`AppDelegate` — **not** in the bridge module, which is the whole reason the
+crash existed.
+
+Omitting it is safe and changes nothing about tracking. You lose the 15-minute
+backstop, which has always been advisory and which nothing depends on; you are
+told through `backgroundTasksNotRegistered`. In a DEBUG build `ready()` fails
+outright so the mistake cannot reach a release, and a development-only alert
+names the remedy. Release builds never show it and never fail for it.
+
+No storage migration. No configuration surface changed.
+
+---
+
 ## 1.0.5
 
 Corners survive the drawing. Three of the four turn-fidelity layers were either
