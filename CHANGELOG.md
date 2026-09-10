@@ -4,6 +4,30 @@ All notable changes to the Tracker iOS SDK. Newest first.
 
 ---
 
+## 1.0.7
+
+The licence revocation check moves to its own host. Nothing else in the SDK
+changed, and no host code has to change with it — the endpoint is a build
+constant and was never configurable, deliberately, because the one party who
+must not choose it is the party being checked.
+
+### Changed
+
+- **The revocation check now calls `https://sdk.fieldtrack360.com/api/v1/verify`,**
+  previously `https://fieldtrack360-sdk.devstree.in/api/v1/verify`. The response
+  signing key is unchanged and is still pinned in the binary rather than fetched,
+  so the three checks each answer must pass — the `key_id` digest binding the
+  answer to the token presented, the echoed nonce, and the Ed25519 signature over
+  the canonical body — are the same checks against the same trust anchor.
+
+  The offline gate in `ready()` is untouched. It is what licenses the app; this
+  endpoint only answers the one question an offline token cannot, which is
+  whether the licence has since been withdrawn. Every failure of it remains
+  fail-open, so a host that cannot reach the new name keeps tracking exactly as
+  it did before.
+
+---
+
 ## 1.0.6
 
 Registering a background task can no longer end the app. A host that reached
