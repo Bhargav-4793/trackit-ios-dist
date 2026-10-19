@@ -6,11 +6,11 @@
 	<dict>
 		<key>Headers/TrackerSnap-Swift.h</key>
 		<data>
-		wWr/iXCsLTrjMTrXfF2WqEF8RQ4=
+		euicch6Y6wdm/JjZEixXETYOppw=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		5g4EfBcuLjFlydI7pZFqejxe+GE=
+		7Mt8S3UoBZh55e7PA7hNcmG28XA=
 		</data>
 		<key>Modules/TrackerSnap.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -18,23 +18,23 @@
 		</data>
 		<key>Modules/TrackerSnap.swiftmodule/arm64-apple-ios-simulator.package.swiftinterface</key>
 		<data>
-		eVrtif8+qvXL2XFX16bWQ0b0ClU=
+		sSLy9o7cbukQ49rwaCgL8QEwxQQ=
 		</data>
 		<key>Modules/TrackerSnap.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
-		eVrtif8+qvXL2XFX16bWQ0b0ClU=
+		sSLy9o7cbukQ49rwaCgL8QEwxQQ=
 		</data>
 		<key>Modules/TrackerSnap.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		hUzkPKYmZhG4u6itr+YpDtG1WQ0=
+		m4JngnS9BnO62g7d0N1SItuIIPE=
 		</data>
 		<key>Modules/TrackerSnap.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		eVrtif8+qvXL2XFX16bWQ0b0ClU=
+		sSLy9o7cbukQ49rwaCgL8QEwxQQ=
 		</data>
 		<key>Modules/TrackerSnap.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		ivoWY3OBzMT9mIeuz1NJfs/3NcI=
+		KKKEOtmb0qbCmDvTbs84URdkT0c=
 		</data>
 		<key>Modules/TrackerSnap.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -42,27 +42,27 @@
 		</data>
 		<key>Modules/TrackerSnap.swiftmodule/x86_64-apple-ios-simulator.package.swiftinterface</key>
 		<data>
-		cNlvt98WxB1VoGHiFOS5bIrCTng=
+		NbN1+IF0f7oSWOpLIsNGR/OynDw=
 		</data>
 		<key>Modules/TrackerSnap.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
-		cNlvt98WxB1VoGHiFOS5bIrCTng=
+		NbN1+IF0f7oSWOpLIsNGR/OynDw=
 		</data>
 		<key>Modules/TrackerSnap.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		tAfyFQdbYcAJo4ZoUMmyS6EOlxQ=
+		vl0elN+J0hRWyg6djZDNQ33zGWg=
 		</data>
 		<key>Modules/TrackerSnap.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		cNlvt98WxB1VoGHiFOS5bIrCTng=
+		NbN1+IF0f7oSWOpLIsNGR/OynDw=
 		</data>
 		<key>Modules/TrackerSnap.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		3ShraMxYdmxzYNdto15JmMfSGKw=
+		XyclnWfyHdURPAAj1dd42t20HHo=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
-		MjvtTSym695AIRXmZg8de3fr/uI=
+		l5V7sGxKmGsVDkYtpCTw2acqDRw=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -71,7 +71,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			jje3tMt34Ex1DmZ5WPcTgW7MSNUyzys9fq6LNs6zs2Q=
+			7HNX3BAq+oaGJOr1KVpNEpkTMcVK7ZptvECl1q1AGUo=
 			</data>
 		</dict>
 		<key>Modules/TrackerSnap.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
@@ -85,35 +85,35 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			8bUcqg0bQRNVRUcbRSmR2N1PLfYDFzHe1S3Zj+ZzYQM=
+			ZU/d2JCxiW9Qu73WDEhN1EXJG4jL1EX0wKkytU4Wrvk=
 			</data>
 		</dict>
 		<key>Modules/TrackerSnap.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			8bUcqg0bQRNVRUcbRSmR2N1PLfYDFzHe1S3Zj+ZzYQM=
+			ZU/d2JCxiW9Qu73WDEhN1EXJG4jL1EX0wKkytU4Wrvk=
 			</data>
 		</dict>
 		<key>Modules/TrackerSnap.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			yF837reoTGgJIe58aQ8ARuGE7h0W84Z4+/HN6HE8+Yw=
+			PjKGgqHQhMrs/tnE5Vy6cXxkeRuowKPFoQ7dLc7W+yQ=
 			</data>
 		</dict>
 		<key>Modules/TrackerSnap.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			8bUcqg0bQRNVRUcbRSmR2N1PLfYDFzHe1S3Zj+ZzYQM=
+			ZU/d2JCxiW9Qu73WDEhN1EXJG4jL1EX0wKkytU4Wrvk=
 			</data>
 		</dict>
 		<key>Modules/TrackerSnap.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			gBUP6B+A5aFc8h35GA7pjChO2WPUMhGpJLz+32hmM4A=
+			XudNYdVSI5LuNQpVUZuxlpjwKs9E8gyADWcL8xmTMY0=
 			</data>
 		</dict>
 		<key>Modules/TrackerSnap.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
@@ -127,42 +127,42 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			FVs72m6LkWk+MO7fDpPmS/TXOvPRIDWeg8B1u466rT0=
+			o/TIEcpirKfeNDwMHMHMhnJHlgF6jTnKYIdBiQQiZJ0=
 			</data>
 		</dict>
 		<key>Modules/TrackerSnap.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			FVs72m6LkWk+MO7fDpPmS/TXOvPRIDWeg8B1u466rT0=
+			o/TIEcpirKfeNDwMHMHMhnJHlgF6jTnKYIdBiQQiZJ0=
 			</data>
 		</dict>
 		<key>Modules/TrackerSnap.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			BHyFZ98YT3S5fPnmRApU0rer23o1FouHk/3rwO3kLFw=
+			YfyiVY/sGZ1N61L61bcSPfMvpHtZcQH3CKWtntQJs1U=
 			</data>
 		</dict>
 		<key>Modules/TrackerSnap.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			FVs72m6LkWk+MO7fDpPmS/TXOvPRIDWeg8B1u466rT0=
+			o/TIEcpirKfeNDwMHMHMhnJHlgF6jTnKYIdBiQQiZJ0=
 			</data>
 		</dict>
 		<key>Modules/TrackerSnap.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Ktm8K+tvKjCPnr5ViRSOx7DrRE8s6KOy9btqE9krRO4=
+			wYqNJ/JiP/wjrKPk9sjEsMmePFhy/B/7lOgMj7tBa3A=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			vKLhuY7sCwm6ndFu+dLhkr5XG80IU2bKRidtH5nSNa8=
+			/lyxXkEsJvAcvKdD+kQdkeBJ08m/PkkE0x6cxRIilcM=
 			</data>
 		</dict>
 	</dict>

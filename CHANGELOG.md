@@ -4,6 +4,48 @@ All notable changes to the Tracker iOS SDK. Newest first.
 
 ---
 
+## 1.0.8
+
+A one-shot location no longer needs the SDK to be ready, and the licence
+revocation check moves to `https://sdk.tracksdkhub.com/api/v1/verify`. No host
+code has to change for either.
+
+### Fixed
+
+- **`getCurrentLocation()` works before `ready()` has succeeded.** It used to
+  fail with `notReady` in any process where `ready()` had not completed, which
+  is every relaunch where the host starts capture only later: a user who
+  force-quit the app during a break could not end the break. It now runs on
+  default configuration, gated on location authorization alone, and returns
+  `permissionDenied` when that is denied, restricted or not yet requested. The
+  SDK never prompts from this path.
+
+  **Licence policy, stated plainly:** the one-shot never reads licence state, so
+  a Release build can take a one-shot fix with no licence, or with a revoked
+  one. Before `ready()` the fix is not stored and not offered to the ingestor.
+  `start()` is unchanged and is still refused without a valid licence.
+
+- **An open one-shot circuit closes by itself.** After 60 seconds one trial
+  attempt is let through, and a failed trial reopens it for another 60 seconds.
+  A successful `ready()` also closes it. Previously, failures with no session
+  (a break, before Start Day) left it open until a session started.
+
+### Added
+
+- **`Tracker.isReady()`** returns whether `ready()` has succeeded in this
+  process and, if not, the code and message of the last refusal, such as
+  `licenseMissing`. It reports `notReady` while `ready()` is still running; there
+  is no separate pending state, so await your own `ready()` rather than polling.
+
+### Changed
+
+- **The revocation check now calls `https://sdk.tracksdkhub.com/api/v1/verify`,**
+  previously `https://sdk.fieldtrack360.com/api/v1/verify`. The response signing
+  key is unchanged and still pinned in the binary. The offline gate in `ready()`
+  is untouched and every failure of this call remains fail-open.
+
+---
+
 ## 1.0.7
 
 The licence revocation check moves to its own host. Nothing else in the SDK

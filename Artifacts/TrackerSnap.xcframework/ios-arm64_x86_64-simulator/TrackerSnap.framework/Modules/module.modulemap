@@ -1,4 +1,3 @@
 framework module TrackerSnap {
   header "TrackerSnap-Swift.h"
-  requires objc
 }

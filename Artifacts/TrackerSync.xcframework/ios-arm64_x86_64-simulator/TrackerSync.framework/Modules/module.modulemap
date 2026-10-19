@@ -1,4 +1,3 @@
 framework module TrackerSync {
   header "TrackerSync-Swift.h"
-  requires objc
 }

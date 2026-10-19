@@ -6,19 +6,19 @@
 	<dict>
 		<key>ios-arm64/TrackerGeo.framework/Headers/TrackerGeo-Swift.h</key>
 		<data>
-		3pFJ6uj1lTD9r9i7HLaGsn4e82A=
+		0SCnbLLZRoTM5UlQg6KJam2np60=
 		</data>
 		<key>ios-arm64/TrackerGeo.framework/Info.plist</key>
 		<data>
-		/UqxzXZIeMfOXfBpMH3FCQ5ymgI=
+		ONY/60eJZuRcj7LjgtInx1/jpRw=
 		</data>
 		<key>ios-arm64/TrackerGeo.framework/Modules/TrackerGeo.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<data>
-		/lsKek5Q16kiKQ7/0cfUzzIHfLQ=
+		yhkjZxSLKqnET7fRaCJ5wmODhYo=
 		</data>
 		<key>ios-arm64/TrackerGeo.framework/Modules/module.modulemap</key>
 		<data>
-		pglZou9eSPWjaF0dC+amnPfI7UQ=
+		3uyf6qBorCkePPUT9epq+MWDGV4=
 		</data>
 		<key>ios-arm64/TrackerGeo.framework/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -26,27 +26,27 @@
 		</data>
 		<key>ios-arm64/TrackerGeo.framework/TrackerGeo</key>
 		<data>
-		vSnqvS+ejbRJgrWMePWcbRC6pbY=
+		8ZNlTJzmoQ8yatp1xyqwcGaxDUU=
 		</data>
 		<key>ios-arm64_x86_64-simulator/TrackerGeo.framework/Headers/TrackerGeo-Swift.h</key>
 		<data>
-		WskPV6X4XRUEKDcbm/rhz2fD9qg=
+		I68Ggb5mXXodBCQoIs/TzsJFxGk=
 		</data>
 		<key>ios-arm64_x86_64-simulator/TrackerGeo.framework/Info.plist</key>
 		<data>
-		CF2X0lOADxmjIhL8iX1APH+iJVI=
+		5A8RbjEspnF3yRF0o7qfgzgcSXM=
 		</data>
 		<key>ios-arm64_x86_64-simulator/TrackerGeo.framework/Modules/TrackerGeo.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		gv4q5VQMtKn1k6fm6TzxqYKB+Ss=
+		o0ymjhE4XYozO0YKZL773Rth0rA=
 		</data>
 		<key>ios-arm64_x86_64-simulator/TrackerGeo.framework/Modules/TrackerGeo.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		Rffl8yQI5vyZjU7FkrR0CWAIpAk=
+		ssNXT6s35j0omTN9DlcNudo5wpY=
 		</data>
 		<key>ios-arm64_x86_64-simulator/TrackerGeo.framework/Modules/module.modulemap</key>
 		<data>
-		pglZou9eSPWjaF0dC+amnPfI7UQ=
+		3uyf6qBorCkePPUT9epq+MWDGV4=
 		</data>
 		<key>ios-arm64_x86_64-simulator/TrackerGeo.framework/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -54,11 +54,11 @@
 		</data>
 		<key>ios-arm64_x86_64-simulator/TrackerGeo.framework/TrackerGeo</key>
 		<data>
-		DthLydxojKjqwQcsgLasuz9186k=
+		Oi8owfHzVpi5cA95mIwXnxEAOV0=
 		</data>
 		<key>ios-arm64_x86_64-simulator/TrackerGeo.framework/_CodeSignature/CodeResources</key>
 		<data>
-		DeeUTRVeAFXH7C1JbTC59C9jQVI=
+		FLg7bbH65Sag34a8OmwkqBbiejQ=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -67,28 +67,28 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			+MIbs6KRgNqRX5C34KlQ6rbsBgWYOynRJjSa4h3IsRA=
+			+RMWXdnk2HQKxgZh3hchlkn7CW9bVQ6rQKArPL5eSpg=
 			</data>
 		</dict>
 		<key>ios-arm64/TrackerGeo.framework/Info.plist</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			CxkBqdgBPlznRFOjGSpWEgvhLidX46WW13c5krLpwaA=
+			WIxtuwZhzMMFRC4wTXcqY1e90TiB8Rcf4HGtTf5X4F0=
 			</data>
 		</dict>
 		<key>ios-arm64/TrackerGeo.framework/Modules/TrackerGeo.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			kOQuZtnUBzzP3xG2SkFmd6zzISIkDQzt6NKpsbS3fE4=
+			oKNwPYO+I+kaWHa5P+etpGVKL+7taxfY8H45B/PLaQY=
 			</data>
 		</dict>
 		<key>ios-arm64/TrackerGeo.framework/Modules/module.modulemap</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			GPEXdecQpRJ3Ui01Tu3QAB2t1Wi4pr7KiuYTboqireM=
+			uRY7ugz3eaaod2ZCPBmhvEIS59mte3fNDc2/w8X/1Aw=
 			</data>
 		</dict>
 		<key>ios-arm64/TrackerGeo.framework/PrivacyInfo.xcprivacy</key>
@@ -102,42 +102,42 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			hCDXjxX4sn26vPKIlyyLOJSC6xxL3pXX/wEIENcbFl8=
+			UwIN7KKJFDTueHDG5Ag1MAVmmVm5xOHt1yA2FLLtjPA=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/TrackerGeo.framework/Headers/TrackerGeo-Swift.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			SMLs+CuOXr7di1UKGu3T3f78aTor9TrH2/hUjSfB2sA=
+			lTW4pcBndDeKm+JD5n0rYDOo83uoJVOhB8sFBPOoY9w=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/TrackerGeo.framework/Info.plist</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			W+aN0bB9GfuFpfSp5kVFSGc8mIRApAmBUFRfXCQ6zzg=
+			r4k0hQ5R5TuLmCZ58es6zrhI1rp9jBbkIborJVj9D+w=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/TrackerGeo.framework/Modules/TrackerGeo.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			cW7bjIgBn5uAOCMMnTe1QbV9ulF3dRVbyy4cJ7G7PZE=
+			aYGerjH75kly9P+49giQPmPMWwVRXuRtfqLBbf1JHKo=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/TrackerGeo.framework/Modules/TrackerGeo.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			PT5k6A9Gwr/N8HAXNyjMht3zP1SQK+MljNnMCpzycCg=
+			mnDdIU5mOZPWnEibV/HSruaSFsZ40IRxkMxPHZzwwfo=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/TrackerGeo.framework/Modules/module.modulemap</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			GPEXdecQpRJ3Ui01Tu3QAB2t1Wi4pr7KiuYTboqireM=
+			uRY7ugz3eaaod2ZCPBmhvEIS59mte3fNDc2/w8X/1Aw=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/TrackerGeo.framework/PrivacyInfo.xcprivacy</key>
@@ -151,14 +151,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			6Rn+3DdyEj3E+a3ko6d3zVPWI3BMLcaBKYzbWuUf21A=
+			IItfNQajfpg7+FwSeri6bPMkLjC3zH4BNDGezb90+fY=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/TrackerGeo.framework/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ogbnfNjJdgpFFGD7mfBUlKWOonHAgH3LOTZO++vjwas=
+			D7jBeAeAMdYLRbSasAPFjHZ8d+MJexGCO1RJjnSvQUU=
 			</data>
 		</dict>
 	</dict>

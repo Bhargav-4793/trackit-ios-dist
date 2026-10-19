@@ -32,7 +32,7 @@ https://github.com/fieldtrack360/tracker-ios
 Or in a `Package.swift`:
 
 ```swift
-.package(url: "https://github.com/fieldtrack360/tracker-ios", from: "1.0.7")
+.package(url: "https://github.com/fieldtrack360/tracker-ios", from: "1.0.8")
 ```
 
 Add only the products you need. Because these are binary targets, each product
